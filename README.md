@@ -22,8 +22,14 @@ Or install it yourself as:
 
 ```
 client = ActionNetworkRest.new(api_key: YOUR_API_KEY)
+
+# Retrieve a Person's data
 person = client.person.get(person_actionnetwork_identifier)
 puts person.email_addresses
+
+# Create a new Person
+person = client.person.create(email_addresses: [{address: 'foo@example.com'}])
+puts person.identifiers
 ```
 
 ## Development
