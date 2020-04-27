@@ -1,6 +1,6 @@
 # ActionNetworkRest
 
-Ruby client for interacting with the ActionNetwork REST API
+Ruby client for interacting with the [ActionNetwork REST API](https://actionnetwork.org/docs/)
 
 ## Installation
 
