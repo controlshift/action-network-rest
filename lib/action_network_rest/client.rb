@@ -17,6 +17,10 @@ module ActionNetworkRest
       }
     end
 
+    def extract_data_from_params(params)
+      params.to_json
+    end
+
     ## Helpers to let users do things like `an_client.person.create(params)`
 
     def person
