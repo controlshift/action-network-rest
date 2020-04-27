@@ -1,6 +1,14 @@
-require "action_network_rest/version"
+require 'vertebrae'
 
 module ActionNetworkRest
-  class Error < StandardError; end
-  # Your code goes here...
+  extend Vertebrae::Base
+
+  class << self
+    def new(options = {})
+      ActionNetworkRest::Client.new(options)
+    end
+  end
 end
+
+require "action_network_rest/version"
+require "action_network_rest/client"

@@ -1,9 +1,7 @@
-RSpec.describe ActionNetworkRest do
+require 'spec_helper'
+
+describe ActionNetworkRest do
   it "has a version number" do
     expect(ActionNetworkRest::VERSION).not_to be nil
-  end
-
-  it "does something useful" do
-    expect(false).to eq(true)
   end
 end
