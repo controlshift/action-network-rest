@@ -16,5 +16,11 @@ module ActionNetworkRest
         user_agent: 'ruby: ActionNetworkRest'
       }
     end
+
+    ## Helpers to let users do things like `an_client.person.create(params)`
+
+    def person
+      @_person ||= ActionNetworkRest::Person.new(client: self)
+    end
   end
 end

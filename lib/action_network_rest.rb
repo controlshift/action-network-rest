@@ -12,3 +12,5 @@ end
 
 require "action_network_rest/version"
 require "action_network_rest/client"
+
+require 'action_network_rest/person'
