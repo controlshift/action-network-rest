@@ -5,7 +5,8 @@ module ActionNetworkRest
     end
 
     def get(id)
-      client.get_request "#{base_path}#{url_escape(id)}"
+      response = client.get_request "#{base_path}#{url_escape(id)}"
+      response.body
     end
 
     def create(person_data, tags: [])

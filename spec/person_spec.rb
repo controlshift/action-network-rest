@@ -27,7 +27,7 @@ describe ActionNetworkRest::Person do
     end
 
     it 'should retrieve person data' do
-      person = subject.person.get(person_id).body
+      person = subject.person.get(person_id)
       expect(person.email_addresses.first.address).to eq 'jane@example.com'
     end
   end

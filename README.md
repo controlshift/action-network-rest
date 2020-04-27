@@ -22,7 +22,7 @@ Or install it yourself as:
 
 ```
 client = ActionNetworkRest.new(api_key: YOUR_API_KEY)
-person = client.person.get(person_actionnetwork_identifier).body
+person = client.person.get(person_actionnetwork_identifier)
 puts person.email_addresses
 ```
 
