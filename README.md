@@ -23,9 +23,8 @@ Or install it yourself as:
 ```
 client = ActionNetworkRest.new(api_key: YOUR_API_KEY)
 
-# Check that our API key is working
-check = client.entry_point.check_authentication
-puts check[:authenticated_response] # true or false
+# Check that our API key is working. Returns true or false.
+client.entry_point.authenticated_successfully?
 
 # Retrieve a Person's data
 person = client.people.get(person_actionnetwork_identifier)

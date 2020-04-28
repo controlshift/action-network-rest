@@ -17,7 +17,7 @@ describe ActionNetworkRest::EntryPoint do
     end
   end
 
-  describe '#check_authentication' do
+  describe '#authenticated_successfully?' do
     before :each do
       stub_actionnetwork_request('/', method: :get).to_return(status: 200, body: response_body)
     end
@@ -40,8 +40,7 @@ describe ActionNetworkRest::EntryPoint do
       end
 
       it 'should return true' do
-        answer = subject.entry_point.check_authentication
-        expect(answer[:authenticated_response]).to be_truthy
+        expect(subject.entry_point.authenticated_successfully?).to be_truthy
       end
     end
 
@@ -59,8 +58,7 @@ describe ActionNetworkRest::EntryPoint do
       end
 
       it 'should return false' do
-        answer = subject.entry_point.check_authentication
-        expect(answer[:authenticated_response]).to be_falsey
+        expect(subject.entry_point.authenticated_successfully?).to be_falsey
       end
     end
   end

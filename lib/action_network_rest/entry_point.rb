@@ -9,14 +9,13 @@ module ActionNetworkRest
       response.body
     end
 
-    def check_authentication
+    def authenticated_successfully?
       response_body = get
 
       # If we successfully authenticated, the entrypoint response will include a reference to tags.
       # If not (API key missing or wrong), the response will not include anything about tags,
       # but will otherwise be successful.
-      authenticated = response_body.dig('_links', 'osdi:tags').present?
-      {authenticated_response: authenticated}
+      response_body.dig('_links', 'osdi:tags').present?
     end
   end
 end
