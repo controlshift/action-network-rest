@@ -30,5 +30,9 @@ module ActionNetworkRest
     def people
       @_people ||= ActionNetworkRest::People.new(client: self)
     end
+
+    def petitions
+      @_petitions ||= ActionNetworkRest::Petitions.new(client: self)
+    end
   end
 end

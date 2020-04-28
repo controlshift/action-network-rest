@@ -1,12 +1,7 @@
 module ActionNetworkRest
-  class People < Vertebrae::Model
+  class People < Base
     def base_path
       'people/'
-    end
-
-    def get(id)
-      response = client.get_request "#{base_path}#{url_escape(id)}"
-      response.body
     end
 
     def create(person_data, tags: [])
@@ -17,12 +12,6 @@ module ActionNetworkRest
 
       response = client.post_request base_path, post_body
       response.body
-    end
-
-    private
-
-    def url_escape(string)
-      CGI.escape(string.to_s)
     end
   end
 end

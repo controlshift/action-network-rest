@@ -36,6 +36,17 @@ puts person.email_addresses
 # Create a new Person
 person = client.people.create(email_addresses: [{address: 'foo@example.com'}])
 puts person.identifiers
+
+# Retrieve a Petition
+petition = client.petitions.get(petition_actionnetwork_identifier)
+puts petition.title
+
+# Create a new Petition
+petition = client.petitions.create({title: 'Do the Thing!'}, creator_person_id: person_actionnetwork_identifier)
+puts petition.identifiers
+
+# Update a Petition
+client.petitions.update(petition_actionnetwork_identifier, {description: 'An updated description'})
 ```
 
 ## Development
