@@ -1,5 +1,5 @@
 module ActionNetworkRest
-  class Person < Vertebrae::Model
+  class People < Vertebrae::Model
     def base_path
       'people/'
     end

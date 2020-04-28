@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ActionNetworkRest::Person do
+describe ActionNetworkRest::People do
   let(:api_key) { 'secret_key' }
 
   subject { ActionNetworkRest.new(api_key: api_key) }
@@ -27,7 +27,7 @@ describe ActionNetworkRest::Person do
     end
 
     it 'should retrieve person data' do
-      person = subject.person.get(person_id)
+      person = subject.people.get(person_id)
       expect(person.email_addresses.first.address).to eq 'jane@example.com'
     end
   end
@@ -54,7 +54,7 @@ describe ActionNetworkRest::Person do
     end
 
     it 'should POST person data' do
-      person = subject.person.create(person_data)
+      person = subject.people.create(person_data)
 
       expect(post_stub).to have_been_requested
 
@@ -70,7 +70,7 @@ describe ActionNetworkRest::Person do
       end
 
       it 'should include tags in post' do
-        person = subject.person.create(person_data, tags: ['foo', 'bar'])
+        person = subject.people.create(person_data, tags: ['foo', 'bar'])
 
         expect(post_stub).to have_been_requested
 

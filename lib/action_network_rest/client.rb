@@ -21,10 +21,10 @@ module ActionNetworkRest
       params.to_json
     end
 
-    ## Helpers to let users do things like `an_client.person.create(params)`
+    ## Helpers to let users do things like `an_client.people.create(params)`
 
-    def person
-      @_person ||= ActionNetworkRest::Person.new(client: self)
+    def people
+      @_people ||= ActionNetworkRest::People.new(client: self)
     end
   end
 end
