@@ -74,4 +74,35 @@ describe ActionNetworkRest::Petitions do
       end
     end
   end
+
+  describe '#update' do
+    let(:petition_data) do
+      {
+        identifiers: ['somesystem:123'],
+        title: 'Do the Thing!',
+        origin_system: 'Some System'
+      }
+    end
+    let(:petition_id) { '123-456-789-abc' }
+    let(:response_body) do
+      {
+        identifiers: ['somesystem:123', "action_network:#{petition_id}"],
+        title: 'Do the Thing!',
+        origin_system: 'Some System'
+      }.to_json
+    end
+    let!(:put_stub) do
+      stub_actionnetwork_request("/petitions/#{petition_id}", method: :put, body: petition_data)
+        .to_return(status: 200, body: response_body)
+    end
+
+    it 'should PUT petition data' do
+      updated_petition = subject.petitions.update(petition_id, petition_data)
+
+      expect(put_stub).to have_been_requested
+
+      expect(updated_petition.identifiers).to contain_exactly('action_network:123-456-789-abc',
+                                                              'somesystem:123')
+    end
+  end
 end
