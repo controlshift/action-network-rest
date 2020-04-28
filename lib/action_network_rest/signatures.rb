@@ -14,5 +14,10 @@ module ActionNetworkRest
       response = client.post_request "petitions/#{url_escape(petition_id)}/signatures/", post_body
       object_from_response(response)
     end
+
+    def update(petition_id:, id:, signature_data:)
+      response = client.put_request "petitions/#{url_escape(petition_id)}/signatures/#{url_escape(id)}", signature_data
+      object_from_response(response)
+    end
   end
 end

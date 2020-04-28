@@ -58,6 +58,9 @@ signature_id = signature.action_network_id
 # Retrieve a Signature
 signature = client.signatures.get(petition_id: petition_id, id: signature_id)
 puts signature.created_date
+
+# Update a Signature
+client.signatures.update(petition_id: petition_id, id: signature_id, signature_data: {comments: 'new comments'})
 ```
 
 ## Development
