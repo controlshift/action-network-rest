@@ -11,7 +11,7 @@ module ActionNetworkRest
       end
 
       response = client.post_request base_path, post_body
-      response.body
+      object_from_response(response)
     end
   end
 end

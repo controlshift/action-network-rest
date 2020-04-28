@@ -58,6 +58,7 @@ describe ActionNetworkRest::People do
       expect(post_stub).to have_been_requested
 
       expect(person.identifiers).to contain_exactly('action_network:123-456-789')
+      expect(person.action_network_id).to eq '123-456-789'
     end
 
     context 'with tags' do
@@ -74,6 +75,7 @@ describe ActionNetworkRest::People do
         expect(post_stub).to have_been_requested
 
         expect(person.identifiers).to contain_exactly('action_network:123-456-789')
+        expect(person.action_network_id).to eq '123-456-789'
       end
     end
   end

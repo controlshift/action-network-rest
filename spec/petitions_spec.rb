@@ -55,6 +55,7 @@ describe ActionNetworkRest::Petitions do
 
       expect(petition.identifiers).to contain_exactly('action_network:123-456-789-abc',
                                                       'somesystem:123')
+      expect(petition.action_network_id).to eq '123-456-789-abc'
     end
 
     context 'with a creator_person_id' do
@@ -69,8 +70,7 @@ describe ActionNetworkRest::Petitions do
 
         expect(post_stub).to have_been_requested
 
-        expect(petition.identifiers).to contain_exactly('action_network:123-456-789-abc',
-                                                        'somesystem:123')
+        expect(petition.action_network_id).to eq '123-456-789-abc'
       end
     end
   end
