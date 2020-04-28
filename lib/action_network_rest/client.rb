@@ -23,6 +23,10 @@ module ActionNetworkRest
 
     ## Helpers to let users do things like `an_client.people.create(params)`
 
+    def entry_point
+      @_entry_point ||= ActionNetworkRest::EntryPoint.new(client: self)
+    end
+
     def people
       @_people ||= ActionNetworkRest::People.new(client: self)
     end
