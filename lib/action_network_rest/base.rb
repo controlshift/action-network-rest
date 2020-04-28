@@ -10,5 +10,9 @@ module ActionNetworkRest
     def url_escape(string)
       CGI.escape(string.to_s)
     end
+
+    def action_network_url(path)
+      client.connection.configuration.endpoint + path
+    end
   end
 end
