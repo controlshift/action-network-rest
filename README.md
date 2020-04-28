@@ -38,7 +38,7 @@ person = client.people.get(person_id)
 puts person.email_addresses
 
 # Create a new Petition
-petition = client.petitions.create({title: 'Do the Thing!'}, creator_person_id: person_actionnetwork_identifier)
+petition = client.petitions.create({title: 'Do the Thing!'}, creator_person_id: person_id)
 petition_id = petition.action_network_id
 
 # Retrieve a Petition
