@@ -29,24 +29,24 @@ client.entry_point.authenticated_successfully?
 # See information about Action Network API endpoints
 client.entry_point.get
 
-# Retrieve a Person's data
-person = client.people.get(person_actionnetwork_identifier)
-puts person.email_addresses
-
 # Create a new Person
 person = client.people.create(email_addresses: [{address: 'foo@example.com'}])
-puts person.identifiers
+person_id = person.action_network_id
 
-# Retrieve a Petition
-petition = client.petitions.get(petition_actionnetwork_identifier)
-puts petition.title
+# Retrieve a Person's data
+person = client.people.get(person_id)
+puts person.email_addresses
 
 # Create a new Petition
 petition = client.petitions.create({title: 'Do the Thing!'}, creator_person_id: person_actionnetwork_identifier)
-puts petition.identifiers
+petition_id = petition.action_network_id
+
+# Retrieve a Petition
+petition = client.petitions.get(petition_id)
+puts petition.title
 
 # Update a Petition
-client.petitions.update(petition_actionnetwork_identifier, {description: 'An updated description'})
+client.petitions.update(petition_id, {description: 'An updated description'})
 ```
 
 ## Development
