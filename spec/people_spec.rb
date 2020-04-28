@@ -22,7 +22,7 @@ describe ActionNetworkRest::People do
     end
 
     before :each do
-      stub_request(:get, "https://actionnetwork.org/api/v2/people/#{person_id}")
+      stub_actionnetwork_request("/people/#{person_id}", method: :get)
         .to_return(status: status, body: response_body)
     end
 
@@ -48,8 +48,7 @@ describe ActionNetworkRest::People do
     end
 
     let!(:post_stub) do
-      stub_request(:post, 'https://actionnetwork.org/api/v2/people/')
-        .with(body: request_body, headers: {'OSDI-API-Token' => api_key})
+      stub_actionnetwork_request('/people/', method: :post, body: request_body)
         .to_return(status: 200, body: response_body)
     end
 
