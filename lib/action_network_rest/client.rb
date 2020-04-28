@@ -34,5 +34,9 @@ module ActionNetworkRest
     def petitions
       @_petitions ||= ActionNetworkRest::Petitions.new(client: self)
     end
+
+    def signatures
+      @_signatures ||= ActionNetworkRest::Signatures.new(client: self)
+    end
   end
 end

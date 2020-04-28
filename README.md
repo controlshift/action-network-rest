@@ -47,6 +47,10 @@ puts petition.title
 
 # Update a Petition
 client.petitions.update(petition_id, {description: 'An updated description'})
+
+# Retrieve a Signature
+signature = client.signatures.get(petition_id: petition_id, id: signature_id)
+puts signature.created_date
 ```
 
 ## Development
