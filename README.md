@@ -50,6 +50,19 @@ puts petition.title
 
 # Update a Petition
 client.petitions.update(petition_id, {description: 'An updated description'})
+
+# Create a Signature on a Petition
+signature = client.petitions(petition_id).signatures.create({comments: 'This is so important',
+                                                             person: {email_addresses: [{address: 'alice@example.com'}]}},
+                                                            tags: ['volunteer'])
+signature_id = signature.action_network_id
+
+# Retrieve a Signature
+signature = client.petitions(petition_id).signatures.get(signature_id)
+puts signature.created_date
+
+# Update a Signature
+client.petitions(petition_id).signatures.update(signature_id, {comments: 'new comments'})
 ```
 
 ## Development

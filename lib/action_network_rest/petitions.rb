@@ -1,5 +1,18 @@
 module ActionNetworkRest
   class Petitions < Base
+    attr_accessor :petition_id
+
+    # Without a petition_id, this class is used for Petition creation/update endpoints.
+    # With a petition_id, this class is used to initialise the Signatures class,
+    # like client.petitions(123).signatures
+    def initialize(petition_id=nil, client:)
+      super(client: client, petition_id: petition_id)
+    end
+
+    def signatures
+      @_signatures ||= ActionNetworkRest::Signatures.new(client: client, petition_id: petition_id)
+    end
+
     def base_path
       'petitions/'
     end

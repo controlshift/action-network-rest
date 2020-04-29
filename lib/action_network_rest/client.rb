@@ -31,8 +31,8 @@ module ActionNetworkRest
       @_people ||= ActionNetworkRest::People.new(client: self)
     end
 
-    def petitions
-      @_petitions ||= ActionNetworkRest::Petitions.new(client: self)
+    def petitions(petition_id=nil)
+      @_petitions ||= ActionNetworkRest::Petitions.new(petition_id, client: self)
     end
   end
 end
