@@ -6,11 +6,6 @@ module ActionNetworkRest
       "petitions/#{url_escape(petition_id)}/signatures/"
     end
 
-    def get(id)
-      response = client.get_request "#{base_path}#{url_escape(id)}"
-      object_from_response(response)
-    end
-
     def create(signature_data, tags: [])
       post_body = signature_data
       if tags.any?
