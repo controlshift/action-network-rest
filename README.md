@@ -77,6 +77,9 @@ tagging_id = tagging.action_network_id
 
 # Retrieve a Tagging
 tagging = client.tags(tag_id).taggings.get(tagging_id)
+
+# Delete a Tagging
+client.tags(tag_id).taggings.delete(tagging_id)
 ```
 
 ## Development

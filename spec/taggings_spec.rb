@@ -78,4 +78,27 @@ describe ActionNetworkRest::Taggings do
       expect(tagging.action_network_id).to eq tagging_id
     end
   end
+
+  describe '#delete' do
+    let(:tag_id) { '71f8feef-61c8-4e6b-9745-ec1d7752f298' }
+    let(:tagging_id) { '82e909f9-1ac7-4952-bbd4-b4690a14bec2' }
+    let(:response_body) do
+      {
+        notice: 'This tagging was successfully deleted.'
+      }.to_json
+    end
+
+    let!(:delete_stub) do
+      stub_actionnetwork_request("/tags/#{tag_id}/taggings/#{tagging_id}", method: :delete)
+        .to_return(status: 200, body: response_body)
+    end
+
+    it 'should DELETE tagging' do
+      result = subject.tags(tag_id).taggings.delete(tagging_id)
+
+      expect(delete_stub).to have_been_requested
+
+      expect(result.notice).to eq 'This tagging was successfully deleted.'
+    end
+  end
 end

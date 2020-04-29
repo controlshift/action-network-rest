@@ -14,5 +14,10 @@ module ActionNetworkRest
       response = client.post_request base_path, post_body
       object_from_response(response)
     end
+
+    def delete(id)
+      response = client.delete_request "#{base_path}#{url_escape(id)}"
+      object_from_response(response)
+    end
   end
 end
