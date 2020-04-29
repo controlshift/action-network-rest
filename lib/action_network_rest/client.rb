@@ -34,5 +34,9 @@ module ActionNetworkRest
     def petitions(petition_id=nil)
       @_petitions ||= ActionNetworkRest::Petitions.new(petition_id, client: self)
     end
+
+    def tags
+      @_tags ||= ActionNetworkRest::Tags.new(client: self)
+    end
   end
 end

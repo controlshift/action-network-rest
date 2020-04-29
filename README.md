@@ -63,6 +63,13 @@ puts signature.created_date
 
 # Update a Signature
 client.petitions(petition_id).signatures.update(signature_id, {comments: 'new comments'})
+
+# Create a Tag
+tag = client.tags.create('Volunteers')
+tag_id = tag.action_network_id
+
+# Retrieve a Tag
+tag = client.tags.get(tag_id)
 ```
 
 ## Development
