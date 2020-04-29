@@ -79,4 +79,39 @@ describe ActionNetworkRest::People do
       end
     end
   end
+
+  describe '#unsubscribe' do
+    let(:person_id) { 'abc-def-123-456' }
+    let(:request_body) do
+      {
+        email_addresses: [
+          { status: 'unsubscribed' }
+        ]
+      }
+    end
+    let(:response_body) do
+      {
+        identifiers: ["action_network:#{person_id}"],
+        email_addresses: [
+          {
+            primary: true,
+            address: 'jane@example.com',
+            status: 'unsubscribed'
+          }
+        ]
+      }.to_json
+    end
+    let!(:put_stub) do
+      stub_actionnetwork_request("/people/#{person_id}", method: :put, body: request_body)
+        .to_return(status: 200, body: response_body)
+    end
+
+    it 'should PUT the unsubscribe request' do
+      updated_person = subject.people.unsubscribe(person_id)
+
+      expect(put_stub).to have_been_requested
+
+      expect(updated_person.action_network_id).to eq person_id
+    end
+  end
 end

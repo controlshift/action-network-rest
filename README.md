@@ -37,6 +37,9 @@ person_id = person.action_network_id
 person = client.people.get(person_id)
 puts person.email_addresses
 
+# Unsubscribe a Person
+client.people.unsubscribe(person_id)
+
 # Create a new Petition
 petition = client.petitions.create({title: 'Do the Thing!'}, creator_person_id: person_id)
 petition_id = petition.action_network_id
