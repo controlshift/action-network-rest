@@ -15,4 +15,16 @@ describe ActionNetworkRest::Client do
 
     specify { expect(subject.people).to be_a ActionNetworkRest::People }
   end
+
+  describe '.petitions' do
+    subject { ActionNetworkRest::Client.new }
+
+    it 'should work without a petition_id' do
+      expect(subject.petitions).to be_a ActionNetworkRest::Petitions
+    end
+
+    it 'should work with a petition_id' do
+      expect(subject.petitions(123)).to be_a ActionNetworkRest::Petitions
+    end
+  end
 end

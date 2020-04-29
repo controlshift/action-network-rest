@@ -22,7 +22,7 @@ describe ActionNetworkRest::Signatures do
     end
 
     it 'should retrieve signature data' do
-      signature = subject.signatures.get(petition_id: petition_id, id: signature_id)
+      signature = subject.petitions(petition_id).signatures.get(signature_id)
       expect(signature.action_network_id).to eq signature_id
     end
   end
@@ -32,18 +32,16 @@ describe ActionNetworkRest::Signatures do
     let(:signature_data) do
       {
         identifiers: ['some_system:123'],
-        comments: 'This petition is so important to me'
+        comments: 'This petition is so important to me',
+        person: {
+          given_name: 'Isaac',
+          family_name: 'Asimov',
+          postal_addresses: [{postal_code: '12345'}],
+          email_addresses: [{address: 'asimov@example.com'}]
+        }
       }
     end
-    let(:person_data) do
-      {
-        given_name: 'Isaac',
-        family_name: 'Asimov',
-        postal_addresses: [{postal_code: '12345'}],
-        email_addresses: [{address: 'asimov@example.com'}]
-      }
-    end
-    let(:request_body) { signature_data.merge(person: person_data) }
+    let(:request_body) { signature_data }
     let(:signature_id) { '789-ghi-321-jkl' }
     let(:response_body) do
       {
@@ -59,9 +57,7 @@ describe ActionNetworkRest::Signatures do
     end
 
     it 'should POST signature data' do
-      signature = subject.signatures.create(petition_id: petition_id,
-                                            signature_data: signature_data,
-                                            person_data: person_data)
+      signature = subject.petitions(petition_id).signatures.create(signature_data)
 
       expect(post_stub).to have_been_requested
 
@@ -69,13 +65,10 @@ describe ActionNetworkRest::Signatures do
     end
 
     context 'with tags' do
-      let(:request_body) { signature_data.merge(person: person_data, add_tags: ['foo', 'bar']) }
+      let(:request_body) { signature_data.merge(add_tags: ['foo', 'bar']) }
 
       it 'should include tags in post' do
-        signature = subject.signatures.create(petition_id: petition_id,
-                                              signature_data: signature_data,
-                                              person_data: person_data,
-                                              tags: ['foo', 'bar'])
+        signature = subject.petitions(petition_id).signatures.create(signature_data, tags: ['foo', 'bar'])
 
         expect(post_stub).to have_been_requested
 
@@ -107,8 +100,7 @@ describe ActionNetworkRest::Signatures do
     end
 
     it 'should PUT signature data' do
-      updated_signature = subject.signatures.update(petition_id: petition_id, id: signature_id,
-                                                    signature_data: signature_data)
+      updated_signature = subject.petitions(petition_id).signatures.update(signature_id, signature_data)
 
       expect(put_stub).to have_been_requested
 

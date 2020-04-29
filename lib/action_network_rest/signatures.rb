@@ -1,22 +1,28 @@
 module ActionNetworkRest
   class Signatures < Base
-    def get(petition_id:, id:)
-      response = client.get_request "petitions/#{url_escape(petition_id)}/signatures/#{url_escape(id)}"
+    attr_accessor :petition_id
+
+    def base_path
+      "petitions/#{url_escape(petition_id)}/signatures/"
+    end
+
+    def get(id)
+      response = client.get_request "#{base_path}#{url_escape(id)}"
       object_from_response(response)
     end
 
-    def create(petition_id:, signature_data:, person_data:, tags: [])
-      post_body = signature_data.merge(person: person_data)
+    def create(signature_data, tags: [])
+      post_body = signature_data
       if tags.any?
         post_body['add_tags'] = tags
       end
 
-      response = client.post_request "petitions/#{url_escape(petition_id)}/signatures/", post_body
+      response = client.post_request base_path, post_body
       object_from_response(response)
     end
 
-    def update(petition_id:, id:, signature_data:)
-      response = client.put_request "petitions/#{url_escape(petition_id)}/signatures/#{url_escape(id)}", signature_data
+    def update(id, signature_data)
+      response = client.put_request "#{base_path}#{url_escape(id)}", signature_data
       object_from_response(response)
     end
   end
