@@ -32,11 +32,23 @@ module ActionNetworkRest
     end
 
     def petitions(petition_id=nil)
-      @_petitions ||= ActionNetworkRest::Petitions.new(petition_id, client: self)
+      if @_petitions&.send(:[], petition_id).nil?
+        @_petitions = {} if @_petitions.nil?
+
+        @_petitions[petition_id] = ActionNetworkRest::Petitions.new(petition_id, client: self)
+      end
+
+      @_petitions[petition_id]
     end
 
     def tags(tag_id=nil)
-      @_tags ||= ActionNetworkRest::Tags.new(tag_id, client: self)
+      if @_tags&.send(:[], tag_id).nil?
+        @_tags = {} if @_tags.nil?
+
+        @_tags[tag_id] = ActionNetworkRest::Tags.new(tag_id, client: self)
+      end
+
+      @_tags[tag_id]
     end
   end
 end
