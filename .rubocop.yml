@@ -1,0 +1,26 @@
+AllCops:
+  DisabledByDefault: true
+
+Security:
+  Enabled: true
+
+Bundler/DuplicatedGem:
+  Enabled: true
+Bundler/InsecureProtocolSource:
+  Enabled: true
+Layout/IndentationStyle:
+  Enabled: true
+Layout/SpaceInsideRangeLiteral:
+  Enabled: true
+Lint:
+  Enabled: true
+Lint/RaiseException:
+  Enabled: true
+Naming/AsciiIdentifiers:
+  Enabled: true
+Naming/ClassAndModuleCamelCase:
+  Enabled: true
+Naming/ConstantName:
+  Enabled: true
+Naming/FileName:
+  Enabled: true
