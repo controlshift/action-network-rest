@@ -29,6 +29,7 @@ describe ActionNetworkRest::Signatures do
 
   describe '#create' do
     let(:petition_id) { 'abc-def-123-456' }
+    let(:person_id) { 'c945d6fe-929e-11e3-a2e9-12313d316c29' }
     let(:signature_data) do
       {
         identifiers: ['some_system:123'],
@@ -47,7 +48,8 @@ describe ActionNetworkRest::Signatures do
       {
         identifiers: ["action_network:#{signature_id}"],
         'action_network:person_id' => '699da712-929f-11e3-a2e9-12313d316c29',
-        'action_network:petition_id' => petition_id
+        'action_network:petition_id' => petition_id,
+        '_links' => { 'osdi:person' => { 'href' => "https://actionnetwork.org/api/v2/people/#{person_id}" } }
       }.to_json
     end
 
@@ -62,6 +64,12 @@ describe ActionNetworkRest::Signatures do
       expect(post_stub).to have_been_requested
 
       expect(signature.action_network_id).to eq signature_id
+    end
+
+    it 'should parse person ID and return in person_id' do
+      signature = subject.petitions(petition_id).signatures.create(signature_data)
+
+      expect(signature.person_id).to eq person_id
     end
 
     context 'with tags' do
