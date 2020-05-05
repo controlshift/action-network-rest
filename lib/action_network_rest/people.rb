@@ -19,5 +19,37 @@ module ActionNetworkRest
       response = client.put_request "#{base_path}#{url_escape(id)}", request_body
       object_from_response(response)
     end
+
+    def find_id_by_email(email)
+      url_escaped_email = url_escape("'#{email}'")
+      response = client.get_request "#{base_path}?filter=email_address eq #{url_escaped_email}"
+      person_action_network_id_from_query_response(response)
+    end
+
+    private
+
+    def person_action_network_id_from_query_response(response)
+      # This works for parsing exactly 1 person's info out of the response.
+      # The response we get from Action Network is expected to have
+      #
+      # "_embedded": {
+      #   "osdi:people": [{
+      #       "identifiers": [
+      #           "action_network:c947bcd0-929e-11e3-a2e9-12313d316c29"
+      #            ....
+      #        ]
+      #    }]
+      # }
+      #
+      # If so, we pull out the action_network identifier and return it
+      identifiers = response.body[:_embedded]['osdi:people'].first[:identifiers] || []
+      qualified_actionnetwork_id = identifiers.find do |id|
+        id.split(':').first == 'action_network'
+      end
+
+      if qualified_actionnetwork_id.present?
+        qualified_actionnetwork_id.sub(/^action_network:/, '')
+      end
+    end
   end
 end
