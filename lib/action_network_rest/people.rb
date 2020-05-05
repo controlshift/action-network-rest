@@ -21,8 +21,8 @@ module ActionNetworkRest
     end
 
     def find_id_by_email(email)
-      url_escaped_email = url_escape("'#{email}'")
-      response = client.get_request "#{base_path}?filter=email_address eq #{url_escaped_email}"
+      url_encoded_filter_string = url_escape("email_address eq '#{email}'")
+      response = client.get_request "#{base_path}?filter=#{url_encoded_filter_string}"
       person_action_network_id_from_query_response(response)
     end
 

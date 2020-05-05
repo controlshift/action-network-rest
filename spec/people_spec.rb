@@ -114,4 +114,29 @@ describe ActionNetworkRest::People do
       expect(updated_person.action_network_id).to eq person_id
     end
   end
+
+  describe '#find_id_by_email' do
+    let(:person_email) { 'jane+123@example.com' }
+    let(:person_id) { 'abc-def-123-456' }
+    let(:response_body) do
+      {
+        _embedded: {
+          'osdi:people': [
+            identifiers: ["action_network:#{person_id}"]
+          ]
+        }
+      }.to_json
+    end
+
+    let!(:get_stub) do
+      url_encoded_filter_string = CGI.escape("email_address eq '#{person_email}'")
+      stub_actionnetwork_request("/people/?filter=#{url_encoded_filter_string}", method: :get)
+        .to_return(status: 200, body: response_body)
+    end
+
+    it 'should GET /people with filter request' do
+      action_network_id = subject.people.find_id_by_email(person_email)
+      expect(action_network_id).to eq(person_id)
+    end
+  end
 end
