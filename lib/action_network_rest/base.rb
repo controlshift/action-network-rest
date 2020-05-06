@@ -11,19 +11,15 @@ module ActionNetworkRest
       CGI.escape(string.to_s)
     end
 
-    def object_from_response(response)
-      obj = response.body
-
-      # The response we get from Action Network may contain an "identifiers" block that looks something like:
-      #
+    def object_with_action_network_id(obj)
+      # Takes an object which may contain an `identifiers` key, which may contain an action_network identifier
+      # If so, we pull out the action_network identifier and stick it in a top-level key "action_network_id",
+      # for the convenience of callers using the returned object.
       # "identifiers": [
       #   "action_network:d6bdf50e-c3a4-4981-a948-3d8c086066d7",
       #   "some_external_system:1",
       #   "another_external_system:57"
       # ]
-      #
-      # If so, we pull out the action_network identifier and stick it in a top-level key "action_network_id",
-      # for the convenience of callers using the returned object.
       identifiers = obj[:identifiers] || []
       qualified_actionnetwork_id = identifiers.find do |id|
         id.split(':').first == 'action_network'
@@ -33,6 +29,11 @@ module ActionNetworkRest
       end
 
       obj
+    end
+
+    def object_from_response(response)
+      obj = response.body
+      object_with_action_network_id(obj)
     end
 
     def action_network_url(path)
