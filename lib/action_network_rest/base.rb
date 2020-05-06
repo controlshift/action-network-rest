@@ -5,13 +5,23 @@ module ActionNetworkRest
       object_from_response(response)
     end
 
+    def list(page: 1)
+      response = client.get_request "#{base_path}?page=#{page}"
+      objects = response.body.dig('_embedded', osdi_key)
+      return [] if objects.nil?
+
+      objects.each { |obj| set_action_network_id_on_object(obj) }
+
+      objects
+    end
+
     private
 
     def url_escape(string)
       CGI.escape(string.to_s)
     end
 
-    def object_with_action_network_id(obj)
+    def set_action_network_id_on_object(obj)
       # Takes an object which may contain an `identifiers` key, which may contain an action_network identifier
       # If so, we pull out the action_network identifier and stick it in a top-level key "action_network_id",
       # for the convenience of callers using the returned object.
@@ -33,7 +43,7 @@ module ActionNetworkRest
 
     def object_from_response(response)
       obj = response.body
-      object_with_action_network_id(obj)
+      set_action_network_id_on_object(obj)
     end
 
     def action_network_url(path)

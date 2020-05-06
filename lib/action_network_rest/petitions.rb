@@ -33,5 +33,11 @@ module ActionNetworkRest
       response = client.put_request petition_path, petition_data
       object_from_response(response)
     end
+
+    private
+
+    def osdi_key
+      'osdi:petitions'
+    end
   end
 end

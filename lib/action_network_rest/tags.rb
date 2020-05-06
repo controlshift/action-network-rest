@@ -22,5 +22,27 @@ module ActionNetworkRest
       response = client.post_request base_path, post_body
       object_from_response(response)
     end
+
+    def find_by_name(name)
+      # Action Network API doesn't support currently OData querying for tags
+      # (https://actionnetwork.org/docs/v2#odata) so we need to retrieve a list of
+      # all tags and iterate to find the one we're looking for.
+      page = 1
+      loop do
+        tags = self.list(page: page)
+        return nil if tags.empty?
+
+        found_tag = tags.find { |t| t.name == name }
+        return found_tag unless found_tag.nil?
+
+        page += 1
+      end
+    end
+
+    private
+
+    def osdi_key
+      'osdi:tags'
+    end
   end
 end

@@ -35,6 +35,17 @@ client.entry_point.get
 person = client.people.create(email_addresses: [{address: 'foo@example.com'}])
 person_id = person.action_network_id
 
+# List people
+people = client.people.list
+
+# Iterate over a list of people
+page_number = 1
+loop do
+  people = client.people.list(page: page_number)
+  break if people.empty?
+  page_number += 1
+end
+
 # Retrieve a Person's data
 person = client.people.get(person_id)
 puts person.email_addresses
@@ -77,6 +88,9 @@ tag_id = tag.action_network_id
 
 # Retrieve a Tag
 tag = client.tags.get(tag_id)
+
+# Retrieve a Tag by name
+tag = client.tags.find_by_name('Volunteers')
 
 # Apply a Tag to a Person
 tagging = client.tags(tag_id).create({identifiers: ['external:123']}, person_id: person_id)

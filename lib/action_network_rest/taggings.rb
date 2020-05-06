@@ -19,5 +19,11 @@ module ActionNetworkRest
       response = client.delete_request "#{base_path}#{url_escape(id)}"
       object_from_response(response)
     end
+
+    private
+
+    def osdi_key
+      'osdi:taggings'
+    end
   end
 end

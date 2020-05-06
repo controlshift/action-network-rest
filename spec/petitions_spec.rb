@@ -27,6 +27,69 @@ describe ActionNetworkRest::Petitions do
     end
   end
 
+  describe '#list' do
+    let(:response_body) do
+      {
+        _embedded: {
+          'osdi:petitions' => [
+            {
+              identifiers: [ 'action_network:a4dde5b6-0512-48ea-b4ad-63a71117b43d' ],
+              title: 'Stop doing the bad thing'
+            },
+            {
+              identifiers: [ 'action_network:a27178b9-45c3-4844-8ebf-ebd5da74a1e3' ],
+              title: 'We need to do this now!'
+            },
+          ]
+        }
+      }.to_json
+    end
+
+    context 'requesting first page' do
+      before :each do
+        stub_actionnetwork_request("/petitions/?page=1", method: :get)
+          .to_return(status: 200, body: response_body)
+      end
+
+      it 'should retrieve the petitions data from first page when calling without an argument' do
+        petitions = subject.petitions.list
+
+        expect(petitions.count).to eq 2
+        expect(petitions.first.action_network_id).to eq 'a4dde5b6-0512-48ea-b4ad-63a71117b43d'
+        expect(petitions.first.title).to eq 'Stop doing the bad thing'
+        expect(petitions.last.action_network_id).to eq 'a27178b9-45c3-4844-8ebf-ebd5da74a1e3'
+        expect(petitions.last.title).to eq 'We need to do this now!'
+      end
+
+      it 'should retrieve the petitions data from first page when calling with page argument' do
+        petitions = subject.petitions.list(page: 1)
+
+        expect(petitions.count).to eq 2
+        expect(petitions.first.action_network_id).to eq 'a4dde5b6-0512-48ea-b4ad-63a71117b43d'
+        expect(petitions.first.title).to eq 'Stop doing the bad thing'
+        expect(petitions.last.action_network_id).to eq 'a27178b9-45c3-4844-8ebf-ebd5da74a1e3'
+        expect(petitions.last.title).to eq 'We need to do this now!'
+      end
+    end
+
+    context 'requesting page 10' do
+      before :each do
+        stub_actionnetwork_request("/petitions/?page=10", method: :get)
+          .to_return(status: 200, body: response_body)
+      end
+
+      it 'should retrieve the petitions data from requested page number' do
+        petitions = subject.petitions.list(page: 10)
+
+        expect(petitions.count).to eq 2
+        expect(petitions.first.action_network_id).to eq 'a4dde5b6-0512-48ea-b4ad-63a71117b43d'
+        expect(petitions.first.title).to eq 'Stop doing the bad thing'
+        expect(petitions.last.action_network_id).to eq 'a27178b9-45c3-4844-8ebf-ebd5da74a1e3'
+        expect(petitions.last.title).to eq 'We need to do this now!'
+      end
+    end
+  end
+
   describe '#create' do
     let(:petition_data) do
       {

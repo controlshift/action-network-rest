@@ -33,6 +33,65 @@ describe ActionNetworkRest::Taggings do
     end
   end
 
+  describe '#list' do
+    let(:tag_id) { '71f8feef-61c8-4e6b-9745-ec1d7752f298' }
+
+    let(:response_body) do
+      {
+        _embedded: {
+          'osdi:taggings' => [
+            { identifiers: [ 'action_network:82e909f9-1ac7-4952-bbd4-b4690a14bec2' ], item_type: 'osdi:person' },
+            { identifiers: [ 'action_network:a9ccd87c-97f4-48db-9e6b-507509091839' ], item_type: 'osdi:person' }
+          ]
+        }
+      }.to_json
+    end
+
+    context 'requesting first page' do
+      before :each do
+        stub_actionnetwork_request("/tags/#{tag_id}/taggings/?page=1", method: :get)
+          .to_return(status: 200, body: response_body)
+      end
+
+      it 'should retrieve the taggings data from first page when calling without an argument' do
+        taggings = subject.tags(tag_id).taggings.list
+
+        expect(taggings.count).to eq 2
+        expect(taggings.first.action_network_id).to eq '82e909f9-1ac7-4952-bbd4-b4690a14bec2'
+        expect(taggings.first.item_type).to eq 'osdi:person'
+        expect(taggings.last.action_network_id).to eq 'a9ccd87c-97f4-48db-9e6b-507509091839'
+        expect(taggings.last.item_type).to eq 'osdi:person'
+      end
+
+      it 'should retrieve the taggings data from first page when calling with page argument' do
+        taggings = subject.tags(tag_id).taggings.list(page: 1)
+
+        expect(taggings.count).to eq 2
+        expect(taggings.first.action_network_id).to eq '82e909f9-1ac7-4952-bbd4-b4690a14bec2'
+        expect(taggings.first.item_type).to eq 'osdi:person'
+        expect(taggings.last.action_network_id).to eq 'a9ccd87c-97f4-48db-9e6b-507509091839'
+        expect(taggings.last.item_type).to eq 'osdi:person'
+      end
+    end
+
+    context 'requesting page 10' do
+      before :each do
+        stub_actionnetwork_request("/tags/#{tag_id}/taggings/?page=10", method: :get)
+          .to_return(status: 200, body: response_body)
+      end
+
+      it 'should retrieve the taggings data from requested page number' do
+        taggings = subject.tags(tag_id).taggings.list(page: 10)
+
+        expect(taggings.count).to eq 2
+        expect(taggings.first.action_network_id).to eq '82e909f9-1ac7-4952-bbd4-b4690a14bec2'
+        expect(taggings.first.item_type).to eq 'osdi:person'
+        expect(taggings.last.action_network_id).to eq 'a9ccd87c-97f4-48db-9e6b-507509091839'
+        expect(taggings.last.item_type).to eq 'osdi:person'
+      end
+    end
+  end
+
   describe '#create' do
     let(:tag_id) { '71f8feef-61c8-4e6b-9745-ec1d7752f298' }
     let(:person_id) { 'c945d6fe-929e-11e3-a2e9-12313d316c29' }
