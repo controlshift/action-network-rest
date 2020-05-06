@@ -2,6 +2,8 @@
 
 Ruby client for interacting with the [ActionNetwork REST API](https://actionnetwork.org/docs/)
 
+[![Build Status](https://travis-ci.org/controlshift/action-network-rest.svg?branch=master)](https://travis-ci.org/controlshift/action-network-rest)
+
 ## Installation
 
 Add this line to your application's Gemfile:
