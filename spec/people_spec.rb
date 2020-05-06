@@ -133,16 +133,34 @@ describe ActionNetworkRest::People do
         'identifiers' => ['action_network:abc-def-123-456']
       }
     end
-
     let!(:get_stub) do
       url_encoded_filter_string = CGI.escape("email_address eq '#{person_email}'")
       stub_actionnetwork_request("/people/?filter=#{url_encoded_filter_string}", method: :get)
         .to_return(status: 200, body: response_body)
     end
 
-    it 'should GET /people with filter request' do
+    let(:other_email) { 'mary+456@example.com' }
+    let(:other_response_body) do
+      {
+        _embedded: {
+          'osdi:people': []
+        }
+      }.to_json
+    end
+    let!(:other_get_stub) do
+      url_encoded_filter_string = CGI.escape("email_address eq '#{other_email}'")
+      stub_actionnetwork_request("/people/?filter=#{url_encoded_filter_string}", method: :get)
+        .to_return(status: 200, body: other_response_body)
+    end
+
+    it 'should GET /people with filter request and return person object' do
       result = subject.people.find_id_by_email(person_email)
       expect(result).to eq(person_result)
+    end
+
+    it 'should GET /people with filter request and return nil if no person' do
+      result = subject.people.find_id_by_email(other_email)
+      expect(result).to be_nil
     end
   end
 end

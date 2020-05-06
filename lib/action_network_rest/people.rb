@@ -21,14 +21,6 @@ module ActionNetworkRest
     end
 
     def find_id_by_email(email)
-      url_encoded_filter_string = url_escape("email_address eq '#{email}'")
-      response = client.get_request "#{base_path}?filter=#{url_encoded_filter_string}"
-      person_action_network_id_from_query_response(response)
-    end
-
-    private
-
-    def person_action_network_id_from_query_response(response)
       # This works for parsing exactly 1 person's info out of the response.
       # The response we get from Action Network is expected to have
       #
@@ -41,8 +33,12 @@ module ActionNetworkRest
       #    }]
       # }
       #
+      url_encoded_filter_string = url_escape("email_address eq '#{email}'")
+      response = client.get_request "#{base_path}?filter=#{url_encoded_filter_string}"
       person_object = response.body[:_embedded]['osdi:people'].first
-      object_with_action_network_id(person_object)
+      if person_object.present?
+        object_with_action_network_id(person_object)
+      end
     end
   end
 end
