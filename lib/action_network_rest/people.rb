@@ -37,7 +37,7 @@ module ActionNetworkRest
       response = client.get_request "#{base_path}?filter=#{url_encoded_filter_string}"
       person_object = response.body[:_embedded][osdi_key].first
       if person_object.present?
-        object_with_action_network_id(person_object)
+        set_action_network_id_on_object(person_object)
       end
     end
 
