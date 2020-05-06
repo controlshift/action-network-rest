@@ -115,7 +115,7 @@ describe ActionNetworkRest::People do
     end
   end
 
-  describe '#find_id_by_email' do
+  describe '#find_by_email' do
     let(:person_email) { 'jane+123@example.com' }
     let(:person_id) { 'abc-def-123-456' }
     let(:response_body) do
@@ -154,12 +154,12 @@ describe ActionNetworkRest::People do
     end
 
     it 'should GET /people with filter request and return person object' do
-      result = subject.people.find_id_by_email(person_email)
+      result = subject.people.find_by_email(person_email)
       expect(result).to eq(person_result)
     end
 
     it 'should GET /people with filter request and return nil if no person' do
-      result = subject.people.find_id_by_email(other_email)
+      result = subject.people.find_by_email(other_email)
       expect(result).to be_nil
     end
   end

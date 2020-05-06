@@ -40,7 +40,7 @@ person = client.people.get(person_id)
 puts person.email_addresses
 
 # Retrieve a Person's data by their email address
-person = client.people.find_id_by_email(person_email
+person = client.people.find_by_email(person_email
 person_id = person.action_network_id
 puts person.email_addresses
 
