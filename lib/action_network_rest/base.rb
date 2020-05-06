@@ -8,6 +8,8 @@ module ActionNetworkRest
     def list(page: 1)
       response = client.get_request "#{base_path}?page=#{page}"
       objects = response.body.dig('_embedded', osdi_key)
+      return [] if objects.nil?
+
       objects.each { |obj| object_with_action_network_id(obj) }
 
       objects

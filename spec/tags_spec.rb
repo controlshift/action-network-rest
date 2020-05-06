@@ -106,4 +106,88 @@ describe ActionNetworkRest::Tags do
       expect(tag.action_network_id).to eq tag_id
     end
   end
+
+  describe '#find_by_name' do
+    before :each do
+      stub_actionnetwork_request("/tags/?page=1", method: :get)
+        .to_return(status: 200, body: response_body)
+    end
+
+    context 'no tags exist' do
+      let(:response_body) { {}.to_json }
+
+      it 'should return nil' do
+        expect(subject.tags.find_by_name('foo')).to be_nil
+      end
+    end
+
+    context 'multiple tags exist' do
+      let(:response_body) do
+        {
+          _embedded: {
+            'osdi:tags' => [
+              { identifiers: [ 'action_network:fc0a1ec6-5743-4b98-ae0c-cea8766b2212' ], name: 'Economic Justice' },
+              { identifiers: [ 'action_network:71f8feef-61c8-4e6b-9745-ec1d7752f298' ], name: 'Volunteers' }
+            ]
+          }
+        }.to_json
+      end
+
+      it 'should return tag matching the name' do
+        found_tag = subject.tags.find_by_name('Volunteers')
+
+        expect(found_tag).not_to be_nil
+        expect(found_tag.action_network_id).to eq('71f8feef-61c8-4e6b-9745-ec1d7752f298')
+        expect(found_tag.name).to eq('Volunteers')
+      end
+
+      context 'no tag matching the name' do
+        before :each do
+          stub_actionnetwork_request("/tags/?page=2", method: :get)
+            .to_return(status: 200, body: {}.to_json)
+        end
+
+        it 'should return nil if no tag matching the name is found' do
+          found_tag = subject.tags.find_by_name('Foo')
+
+          expect(found_tag).to be_nil
+        end
+      end
+    end
+
+    context 'tag is retrieved in second page' do
+      let(:response_body) do
+        {
+          _embedded: {
+            'osdi:tags' => [
+              { identifiers: [ 'action_network:71f8feef-61c8-4e6b-9745-ec1d7752f298' ], name: 'Economic Justice' }
+            ]
+          }
+        }.to_json
+      end
+
+      let(:second_page_response_body) do
+        {
+          _embedded: {
+            'osdi:tags' => [
+              { identifiers: [ 'action_network:71f8feef-61c8-4e6b-9745-ec1d7752f298' ], name: 'Volunteers' }
+            ]
+          }
+        }.to_json
+      end
+
+      before :each do
+        stub_actionnetwork_request("/tags/?page=2", method: :get)
+          .to_return(status: 200, body: second_page_response_body)
+      end
+
+      it 'should return tag matching the name' do
+        found_tag = subject.tags.find_by_name('Volunteers')
+
+        expect(found_tag).not_to be_nil
+        expect(found_tag.action_network_id).to eq('71f8feef-61c8-4e6b-9745-ec1d7752f298')
+        expect(found_tag.name).to eq('Volunteers')
+      end
+    end
+  end
 end
