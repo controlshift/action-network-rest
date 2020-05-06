@@ -20,5 +20,11 @@ module ActionNetworkRest
       response = client.put_request "#{base_path}#{url_escape(id)}", signature_data
       object_from_response(response)
     end
+
+    private
+
+    def osdi_key
+      'osdi:signatures'
+    end
   end
 end

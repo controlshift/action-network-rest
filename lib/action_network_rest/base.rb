@@ -5,6 +5,14 @@ module ActionNetworkRest
       object_from_response(response)
     end
 
+    def list(page: 1)
+      response = client.get_request "#{base_path}?page=#{page}"
+      objects = response.body.dig('_embedded', osdi_key)
+      objects.each { |obj| object_with_action_network_id(obj) }
+
+      objects
+    end
+
     private
 
     def url_escape(string)

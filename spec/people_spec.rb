@@ -32,6 +32,97 @@ describe ActionNetworkRest::People do
     end
   end
 
+  describe '#list' do
+    let(:response_body) do
+      {
+        _embedded: {
+          'osdi:people' => [
+            {
+              identifiers: [ 'action_network:d91b4b2e-ae0e-4cd3-9ed7-d0ec501b0bc3' ],
+              given_name: 'John',
+              family_name: 'Smith',
+              email_addresses: [
+                {
+                  primary: true,
+                  address: 'johnsmith@mail.com',
+                  status: 'subscribed'
+                }
+              ],
+            },
+            {
+              identifiers: [ 'action_network:1efc3644-af25-4253-90b8-a0baf12dbd1e' ],
+              given_name: 'Jane',
+              family_name: 'Doe',
+              email_addresses: [
+                {
+                  primary: true,
+                  address: 'janedoe@mail.com',
+                  status: 'unsubscribed'
+                }
+              ],
+            },
+          ]
+        }
+      }.to_json
+    end
+
+    context 'requesting first page' do
+      before :each do
+        stub_actionnetwork_request("/people/?page=1", method: :get)
+          .to_return(status: 200, body: response_body)
+      end
+
+      it 'should retrieve the people data from first page when calling without an argument' do
+        people = subject.people.list
+
+        expect(people.count).to eq 2
+        expect(people.first.action_network_id).to eq 'd91b4b2e-ae0e-4cd3-9ed7-d0ec501b0bc3'
+        expect(people.first.given_name).to eq 'John'
+        expect(people.first.family_name).to eq 'Smith'
+        expect(people.first.email_addresses.first.address).to eq 'johnsmith@mail.com'
+        expect(people.last.action_network_id).to eq '1efc3644-af25-4253-90b8-a0baf12dbd1e'
+        expect(people.last.given_name).to eq 'Jane'
+        expect(people.last.family_name).to eq 'Doe'
+        expect(people.last.email_addresses.first.address).to eq 'janedoe@mail.com'
+      end
+
+      it 'should retrieve the people data from first page when calling with page argument' do
+        people = subject.people.list(page: 1)
+
+        expect(people.count).to eq 2
+        expect(people.first.action_network_id).to eq 'd91b4b2e-ae0e-4cd3-9ed7-d0ec501b0bc3'
+        expect(people.first.given_name).to eq 'John'
+        expect(people.first.family_name).to eq 'Smith'
+        expect(people.first.email_addresses.first.address).to eq 'johnsmith@mail.com'
+        expect(people.last.action_network_id).to eq '1efc3644-af25-4253-90b8-a0baf12dbd1e'
+        expect(people.last.given_name).to eq 'Jane'
+        expect(people.last.family_name).to eq 'Doe'
+        expect(people.last.email_addresses.first.address).to eq 'janedoe@mail.com'
+      end
+    end
+
+    context 'requesting page 10' do
+      before :each do
+        stub_actionnetwork_request("/people/?page=10", method: :get)
+          .to_return(status: 200, body: response_body)
+      end
+
+      it 'should retrieve the people data from requested page number' do
+        people = subject.people.list(page: 10)
+
+        expect(people.count).to eq 2
+        expect(people.first.action_network_id).to eq 'd91b4b2e-ae0e-4cd3-9ed7-d0ec501b0bc3'
+        expect(people.first.given_name).to eq 'John'
+        expect(people.first.family_name).to eq 'Smith'
+        expect(people.first.email_addresses.first.address).to eq 'johnsmith@mail.com'
+        expect(people.last.action_network_id).to eq '1efc3644-af25-4253-90b8-a0baf12dbd1e'
+        expect(people.last.given_name).to eq 'Jane'
+        expect(people.last.family_name).to eq 'Doe'
+        expect(people.last.email_addresses.first.address).to eq 'janedoe@mail.com'
+      end
+    end
+  end
+
   describe '#create' do
     let(:person_data) do
       {

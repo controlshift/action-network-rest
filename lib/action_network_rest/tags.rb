@@ -22,5 +22,11 @@ module ActionNetworkRest
       response = client.post_request base_path, post_body
       object_from_response(response)
     end
+
+    private
+
+    def osdi_key
+      'osdi:tags'
+    end
   end
 end

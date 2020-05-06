@@ -27,6 +27,73 @@ describe ActionNetworkRest::Signatures do
     end
   end
 
+  describe '#list' do
+    let(:petition_id) { 'abc-def-123-456' }
+
+    let(:response_body) do
+      {
+        _embedded: {
+          'osdi:signatures' => [
+            {
+              identifiers: [ 'action_network:d6bdf50e-c3a4-4981-a948-3d8c086066d7' ],
+              'action_network:person_id' => '699da712-929f-11e3-a2e9-12313d316c29',
+              'action_network:petition_id' => petition_id
+            },
+            {
+              identifiers: [ 'action_network:71497ab2-b3e7-4896-af46-126ac7287dab' ],
+              'action_network:person_id' => 'c945d6fe-929e-11e3-a2e9-12313d316c29',
+              'action_network:petition_id' => petition_id
+            },
+          ]
+        }
+      }.to_json
+    end
+
+    context 'requesting first page' do
+      before :each do
+        stub_actionnetwork_request("/petitions/#{petition_id}/signatures/?page=1", method: :get)
+          .to_return(status: 200, body: response_body)
+      end
+
+      it 'should retrieve the signatures data from first page when calling without an argument' do
+        signatures = subject.petitions(petition_id).signatures.list
+
+        expect(signatures.count).to eq 2
+        expect(signatures.first.action_network_id).to eq 'd6bdf50e-c3a4-4981-a948-3d8c086066d7'
+        expect(signatures.first['action_network:person_id']).to eq '699da712-929f-11e3-a2e9-12313d316c29'
+        expect(signatures.last.action_network_id).to eq '71497ab2-b3e7-4896-af46-126ac7287dab'
+        expect(signatures.last['action_network:person_id']).to eq 'c945d6fe-929e-11e3-a2e9-12313d316c29'
+      end
+
+      it 'should retrieve the signatures data from first page when calling with page argument' do
+        signatures = subject.petitions(petition_id).signatures.list(page: 1)
+
+        expect(signatures.count).to eq 2
+        expect(signatures.first.action_network_id).to eq 'd6bdf50e-c3a4-4981-a948-3d8c086066d7'
+        expect(signatures.first['action_network:person_id']).to eq '699da712-929f-11e3-a2e9-12313d316c29'
+        expect(signatures.last.action_network_id).to eq '71497ab2-b3e7-4896-af46-126ac7287dab'
+        expect(signatures.last['action_network:person_id']).to eq 'c945d6fe-929e-11e3-a2e9-12313d316c29'
+      end
+    end
+
+    context 'requesting page 10' do
+      before :each do
+        stub_actionnetwork_request("/petitions/#{petition_id}/signatures/?page=10", method: :get)
+          .to_return(status: 200, body: response_body)
+      end
+
+      it 'should retrieve the signatures data from requested page number' do
+        signatures = subject.petitions(petition_id).signatures.list(page: 10)
+
+        expect(signatures.count).to eq 2
+        expect(signatures.first.action_network_id).to eq 'd6bdf50e-c3a4-4981-a948-3d8c086066d7'
+        expect(signatures.first['action_network:person_id']).to eq '699da712-929f-11e3-a2e9-12313d316c29'
+        expect(signatures.last.action_network_id).to eq '71497ab2-b3e7-4896-af46-126ac7287dab'
+        expect(signatures.last['action_network:person_id']).to eq 'c945d6fe-929e-11e3-a2e9-12313d316c29'
+      end
+    end
+  end
+
   describe '#create' do
     let(:petition_id) { 'abc-def-123-456' }
     let(:signature_data) do

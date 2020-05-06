@@ -26,6 +26,63 @@ describe ActionNetworkRest::Tags do
     end
   end
 
+  describe '#list' do
+    let(:response_body) do
+      {
+        _embedded: {
+          'osdi:tags' => [
+            { identifiers: [ 'action_network:fc0a1ec6-5743-4b98-ae0c-cea8766b2212' ], name: 'Economic Justice' },
+            { identifiers: [ 'action_network:71f8feef-61c8-4e6b-9745-ec1d7752f298' ], name: 'Volunteers' }
+          ]
+        }
+      }.to_json
+    end
+
+    context 'requesting first page' do
+      before :each do
+        stub_actionnetwork_request("/tags/?page=1", method: :get)
+          .to_return(status: 200, body: response_body)
+      end
+
+      it 'should retrieve the tags data from first page when calling without an argument' do
+        tags = subject.tags.list
+
+        expect(tags.count).to eq 2
+        expect(tags.first.action_network_id).to eq 'fc0a1ec6-5743-4b98-ae0c-cea8766b2212'
+        expect(tags.first.name).to eq 'Economic Justice'
+        expect(tags.last.action_network_id).to eq '71f8feef-61c8-4e6b-9745-ec1d7752f298'
+        expect(tags.last.name).to eq 'Volunteers'
+      end
+
+      it 'should retrieve the tags data from first page when calling with page argument' do
+        tags = subject.tags.list(page: 1)
+
+        expect(tags.count).to eq 2
+        expect(tags.first.action_network_id).to eq 'fc0a1ec6-5743-4b98-ae0c-cea8766b2212'
+        expect(tags.first.name).to eq 'Economic Justice'
+        expect(tags.last.action_network_id).to eq '71f8feef-61c8-4e6b-9745-ec1d7752f298'
+        expect(tags.last.name).to eq 'Volunteers'
+      end
+    end
+
+    context 'requesting page 10' do
+      before :each do
+        stub_actionnetwork_request("/tags/?page=10", method: :get)
+          .to_return(status: 200, body: response_body)
+      end
+
+      it 'should retrieve the tags data from requested page number' do
+        tags = subject.tags.list(page: 10)
+
+        expect(tags.count).to eq 2
+        expect(tags.first.action_network_id).to eq 'fc0a1ec6-5743-4b98-ae0c-cea8766b2212'
+        expect(tags.first.name).to eq 'Economic Justice'
+        expect(tags.last.action_network_id).to eq '71f8feef-61c8-4e6b-9745-ec1d7752f298'
+        expect(tags.last.name).to eq 'Volunteers'
+      end
+    end
+  end
+
   describe '#create' do
     let(:tag_name) { 'Volunteers' }
     let(:request_body) { {name: tag_name} }
