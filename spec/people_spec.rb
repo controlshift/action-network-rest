@@ -127,6 +127,12 @@ describe ActionNetworkRest::People do
         }
       }.to_json
     end
+    let(:person_result) do
+      {
+        'action_network_id' => 'abc-def-123-456',
+        'identifiers' => ['action_network:abc-def-123-456']
+      }
+    end
 
     let!(:get_stub) do
       url_encoded_filter_string = CGI.escape("email_address eq '#{person_email}'")
@@ -135,8 +141,8 @@ describe ActionNetworkRest::People do
     end
 
     it 'should GET /people with filter request' do
-      action_network_id = subject.people.find_id_by_email(person_email)
-      expect(action_network_id).to eq(person_id)
+      result = subject.people.find_id_by_email(person_email)
+      expect(result).to eq(person_result)
     end
   end
 end

@@ -41,15 +41,8 @@ module ActionNetworkRest
       #    }]
       # }
       #
-      # If so, we pull out the action_network identifier and return it
-      identifiers = response.body[:_embedded]['osdi:people'].first[:identifiers] || []
-      qualified_actionnetwork_id = identifiers.find do |id|
-        id.split(':').first == 'action_network'
-      end
-
-      if qualified_actionnetwork_id.present?
-        qualified_actionnetwork_id.sub(/^action_network:/, '')
-      end
+      person_object = response.body[:_embedded]['osdi:people'].first
+      object_with_action_network_id(person_object)
     end
   end
 end
