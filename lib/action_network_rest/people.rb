@@ -20,7 +20,7 @@ module ActionNetworkRest
       object_from_response(response)
     end
 
-    def find_id_by_email(email)
+    def find_by_email(email)
       # This works for parsing exactly 1 person's info out of the response.
       # The response we get from Action Network is expected to have
       #
