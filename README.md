@@ -1,6 +1,6 @@
 # ActionNetworkRest
 
-Ruby client for interacting with the [ActionNetwork REST API](https://actionnetwork.org/docs/)
+Ruby client for interacting with the [ActionNetwork REST API](https://actionnetwork.org/docs/) from the engineering team at [ControlShift](https://www.controlshiftlabs.com/).
 
 [![Build Status](https://travis-ci.org/controlshift/action-network-rest.svg?branch=master)](https://travis-ci.org/controlshift/action-network-rest)
 
