@@ -41,6 +41,12 @@ module ActionNetworkRest
       end
     end
 
+    def update(id, person_data)
+      people_path = "#{base_path}#{url_escape(id)}"
+      response = client.put_request people_path, person_data
+      object_from_response(response)
+    end
+
     private
 
     def osdi_key

@@ -23,6 +23,8 @@ Or install it yourself as:
 ## Usage
 
 ```
+require 'action_network_rest'
+
 client = ActionNetworkRest.new(api_key: YOUR_API_KEY)
 
 # Check that our API key is working. Returns true or false.
@@ -51,9 +53,12 @@ person = client.people.get(person_id)
 puts person.email_addresses
 
 # Retrieve a Person's data by their email address
-person = client.people.find_by_email(person_email
+person = client.people.find_by_email(person_email)
 person_id = person.action_network_id
 puts person.email_addresses
+
+# Update a Person
+client.people.update(person_id, {custom_fields: {custom_id: "12345"}})
 
 # Unsubscribe a Person
 client.people.unsubscribe(person_id)

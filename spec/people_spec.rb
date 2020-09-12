@@ -254,4 +254,28 @@ describe ActionNetworkRest::People do
       expect(result).to be_nil
     end
   end
+
+  describe '#update' do
+    let(:person_data) do
+      {
+        given_name: 'John',
+        family_name: 'Smith',
+        phone_number: [ { number: '12021234444' } ]
+      }
+    end
+    let(:person_id) { SecureRandom.uuid }
+    let(:response_body) { person_data.to_json }
+    let!(:put_stub) do
+      stub_actionnetwork_request("/people/#{person_id}", method: :put, body: person_data)
+        .to_return(status: 200, body: response_body)
+    end
+
+    it 'should PUT people data' do
+      updated_person = subject.people.update(person_id, person_data)
+
+      expect(put_stub).to have_been_requested
+
+      expect(updated_person.family_name).to eq(person_data[:family_name])
+    end
+  end
 end
