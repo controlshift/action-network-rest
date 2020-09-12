@@ -58,8 +58,7 @@ person_id = person.action_network_id
 puts person.email_addresses
 
 # Update a Person
-person.custom_fields.custom_id = "12345"
-client.people.update(person)
+client.people.update(person_id, {custom_fields: {custom_id: "12345"}})
 
 # Unsubscribe a Person
 client.people.unsubscribe(person_id)
