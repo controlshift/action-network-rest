@@ -258,13 +258,11 @@ describe ActionNetworkRest::People do
   describe '#update' do
     let(:person_data) do
       {
-        action_network_id: person_id,
         given_name: 'John',
         family_name: 'Smith',
         phone_number: [ { number: '12021234444' } ]
       }
     end
-    let(:person) { Hashie::Mash.new(person_data) }
     let(:person_id) { SecureRandom.uuid }
     let(:response_body) { person_data.to_json }
     let!(:put_stub) do
@@ -273,11 +271,11 @@ describe ActionNetworkRest::People do
     end
 
     it 'should PUT people data' do
-      updated_person = subject.people.update(person)
+      updated_person = subject.people.update(person_id, person_data)
 
       expect(put_stub).to have_been_requested
 
-      expect(updated_person).to eq(person)
+      expect(updated_person.family_name).to eq(person_data[:family_name])
     end
   end
 end
