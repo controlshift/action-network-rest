@@ -1,5 +1,6 @@
 AllCops:
   DisabledByDefault: true
+  NewCops: enable
 
 Security:
   Enabled: true
