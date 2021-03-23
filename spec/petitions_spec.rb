@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe ActionNetworkRest::Petitions do
@@ -33,13 +35,13 @@ describe ActionNetworkRest::Petitions do
         _embedded: {
           'osdi:petitions' => [
             {
-              identifiers: [ 'action_network:a4dde5b6-0512-48ea-b4ad-63a71117b43d' ],
+              identifiers: ['action_network:a4dde5b6-0512-48ea-b4ad-63a71117b43d'],
               title: 'Stop doing the bad thing'
             },
             {
-              identifiers: [ 'action_network:a27178b9-45c3-4844-8ebf-ebd5da74a1e3' ],
+              identifiers: ['action_network:a27178b9-45c3-4844-8ebf-ebd5da74a1e3'],
               title: 'We need to do this now!'
-            },
+            }
           ]
         }
       }.to_json
@@ -47,7 +49,7 @@ describe ActionNetworkRest::Petitions do
 
     context 'requesting first page' do
       before :each do
-        stub_actionnetwork_request("/petitions/?page=1", method: :get)
+        stub_actionnetwork_request('/petitions/?page=1', method: :get)
           .to_return(status: 200, body: response_body)
       end
 
@@ -74,7 +76,7 @@ describe ActionNetworkRest::Petitions do
 
     context 'requesting page 10' do
       before :each do
-        stub_actionnetwork_request("/petitions/?page=10", method: :get)
+        stub_actionnetwork_request('/petitions/?page=10', method: :get)
           .to_return(status: 200, body: response_body)
       end
 
@@ -125,7 +127,7 @@ describe ActionNetworkRest::Petitions do
       let(:person_id) { 'c945d6fe-929e-11e3-a2e9-12313d316c29' }
       let(:person_url) { "https://actionnetwork.org/api/v2/people/#{person_id}" }
       let(:request_body) do
-        petition_data.merge({'_links' => {'osdi:creator' => {'href' => person_url}}})
+        petition_data.merge({ '_links' => { 'osdi:creator' => { 'href' => person_url } } })
       end
 
       it 'should include a link to the creator' do

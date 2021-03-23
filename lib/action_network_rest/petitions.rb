@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActionNetworkRest
   class Petitions < Base
     attr_accessor :petition_id
@@ -5,7 +7,7 @@ module ActionNetworkRest
     # Without a petition_id, this class is used for Petition creation/update endpoints.
     # With a petition_id, this class is used to initialise the Signatures class,
     # like client.petitions(123).signatures
-    def initialize(petition_id=nil, client:)
+    def initialize(petition_id = nil, client:)
       super(client: client, petition_id: petition_id)
     end
 
@@ -21,7 +23,7 @@ module ActionNetworkRest
       post_body = petition_data
       if creator_person_id.present?
         creator_person_url = action_network_url("/people/#{url_escape(creator_person_id)}")
-        post_body['_links'] = {'osdi:creator' => {href: creator_person_url}}
+        post_body['_links'] = { 'osdi:creator' => { href: creator_person_url } }
       end
 
       response = client.post_request base_path, post_body

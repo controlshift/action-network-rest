@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'lib/action_network_rest'
 require 'dotenv'
 require 'byebug'
@@ -10,4 +12,4 @@ client = ActionNetworkRest.new(api_key: ENV['API_KEY']) # rubocop:disable Lint/U
 puts "Ready to call Action Network API using 'client' object"
 byebug # rubocop:disable Lint/Debugger
 
-puts "Bye!"
+puts 'Bye!'

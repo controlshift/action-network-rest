@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe ActionNetworkRest::EntryPoint do
@@ -6,14 +8,14 @@ describe ActionNetworkRest::EntryPoint do
   subject { ActionNetworkRest.new(api_key: api_key) }
 
   describe '#get' do
-    let(:response_body) { {some: 'data'}.to_json }
+    let(:response_body) { { some: 'data' }.to_json }
 
     before :each do
       stub_actionnetwork_request('/', method: :get).to_return(status: 200, body: response_body)
     end
 
     it 'should return the response' do
-      expect(subject.entry_point.get).to eq({'some' => 'data'})
+      expect(subject.entry_point.get).to eq({ 'some' => 'data' })
     end
   end
 

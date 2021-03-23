@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActionNetworkRest
-  VERSION = "0.6.0"
+  VERSION = '0.6.0'
 end

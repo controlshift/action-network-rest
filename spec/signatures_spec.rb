@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe ActionNetworkRest::Signatures do
@@ -35,15 +37,15 @@ describe ActionNetworkRest::Signatures do
         _embedded: {
           'osdi:signatures' => [
             {
-              identifiers: [ 'action_network:d6bdf50e-c3a4-4981-a948-3d8c086066d7' ],
+              identifiers: ['action_network:d6bdf50e-c3a4-4981-a948-3d8c086066d7'],
               'action_network:person_id' => '699da712-929f-11e3-a2e9-12313d316c29',
               'action_network:petition_id' => petition_id
             },
             {
-              identifiers: [ 'action_network:71497ab2-b3e7-4896-af46-126ac7287dab' ],
+              identifiers: ['action_network:71497ab2-b3e7-4896-af46-126ac7287dab'],
               'action_network:person_id' => 'c945d6fe-929e-11e3-a2e9-12313d316c29',
               'action_network:petition_id' => petition_id
-            },
+            }
           ]
         }
       }.to_json
@@ -103,8 +105,8 @@ describe ActionNetworkRest::Signatures do
         person: {
           given_name: 'Isaac',
           family_name: 'Asimov',
-          postal_addresses: [{postal_code: '12345'}],
-          email_addresses: [{address: 'asimov@example.com'}]
+          postal_addresses: [{ postal_code: '12345' }],
+          email_addresses: [{ address: 'asimov@example.com' }]
         }
       }
     end
@@ -132,10 +134,10 @@ describe ActionNetworkRest::Signatures do
     end
 
     context 'with tags' do
-      let(:request_body) { signature_data.merge(add_tags: ['foo', 'bar']) }
+      let(:request_body) { signature_data.merge(add_tags: %w[foo bar]) }
 
       it 'should include tags in post' do
-        signature = subject.petitions(petition_id).signatures.create(signature_data, tags: ['foo', 'bar'])
+        signature = subject.petitions(petition_id).signatures.create(signature_data, tags: %w[foo bar])
 
         expect(post_stub).to have_been_requested
 

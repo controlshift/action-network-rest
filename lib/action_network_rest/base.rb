@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActionNetworkRest
   class Base < Vertebrae::Model
     def get(id)

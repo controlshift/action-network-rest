@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe ActionNetworkRest::People do
@@ -38,7 +40,7 @@ describe ActionNetworkRest::People do
         _embedded: {
           'osdi:people' => [
             {
-              identifiers: [ 'action_network:d91b4b2e-ae0e-4cd3-9ed7-d0ec501b0bc3' ],
+              identifiers: ['action_network:d91b4b2e-ae0e-4cd3-9ed7-d0ec501b0bc3'],
               given_name: 'John',
               family_name: 'Smith',
               email_addresses: [
@@ -47,10 +49,10 @@ describe ActionNetworkRest::People do
                   address: 'johnsmith@mail.com',
                   status: 'subscribed'
                 }
-              ],
+              ]
             },
             {
-              identifiers: [ 'action_network:1efc3644-af25-4253-90b8-a0baf12dbd1e' ],
+              identifiers: ['action_network:1efc3644-af25-4253-90b8-a0baf12dbd1e'],
               given_name: 'Jane',
               family_name: 'Doe',
               email_addresses: [
@@ -59,8 +61,8 @@ describe ActionNetworkRest::People do
                   address: 'janedoe@mail.com',
                   status: 'unsubscribed'
                 }
-              ],
-            },
+              ]
+            }
           ]
         }
       }.to_json
@@ -68,7 +70,7 @@ describe ActionNetworkRest::People do
 
     context 'requesting first page' do
       before :each do
-        stub_actionnetwork_request("/people/?page=1", method: :get)
+        stub_actionnetwork_request('/people/?page=1', method: :get)
           .to_return(status: 200, body: response_body)
       end
 
@@ -103,7 +105,7 @@ describe ActionNetworkRest::People do
 
     context 'requesting page 10' do
       before :each do
-        stub_actionnetwork_request("/people/?page=10", method: :get)
+        stub_actionnetwork_request('/people/?page=10', method: :get)
           .to_return(status: 200, body: response_body)
       end
 
@@ -128,13 +130,13 @@ describe ActionNetworkRest::People do
       {
         given_name: 'Alan',
         family_name: 'Turing',
-        email_addresses: [{address: 'alan@example.com'}]
+        email_addresses: [{ address: 'alan@example.com' }]
       }
     end
     let(:request_body) { { person: person_data } }
     let(:response_body) do
       {
-        identifiers: ["action_network:123-456-789"],
+        identifiers: ['action_network:123-456-789']
       }.to_json
     end
 
@@ -155,13 +157,13 @@ describe ActionNetworkRest::People do
     context 'with tags' do
       let(:request_body) do
         {
-          add_tags: ['foo', 'bar'],
+          add_tags: %w[foo bar],
           person: person_data
         }
       end
 
       it 'should include tags in post' do
-        person = subject.people.create(person_data, tags: ['foo', 'bar'])
+        person = subject.people.create(person_data, tags: %w[foo bar])
 
         expect(post_stub).to have_been_requested
 
@@ -260,7 +262,7 @@ describe ActionNetworkRest::People do
       {
         given_name: 'John',
         family_name: 'Smith',
-        phone_number: [ { number: '12021234444' } ]
+        phone_number: [{ number: '12021234444' }]
       }
     end
     let(:person_id) { SecureRandom.uuid }

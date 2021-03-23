@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe ActionNetworkRest::Taggings do
@@ -40,8 +42,8 @@ describe ActionNetworkRest::Taggings do
       {
         _embedded: {
           'osdi:taggings' => [
-            { identifiers: [ 'action_network:82e909f9-1ac7-4952-bbd4-b4690a14bec2' ], item_type: 'osdi:person' },
-            { identifiers: [ 'action_network:a9ccd87c-97f4-48db-9e6b-507509091839' ], item_type: 'osdi:person' }
+            { identifiers: ['action_network:82e909f9-1ac7-4952-bbd4-b4690a14bec2'], item_type: 'osdi:person' },
+            { identifiers: ['action_network:a9ccd87c-97f4-48db-9e6b-507509091839'], item_type: 'osdi:person' }
           ]
         }
       }.to_json
@@ -95,10 +97,10 @@ describe ActionNetworkRest::Taggings do
   describe '#create' do
     let(:tag_id) { '71f8feef-61c8-4e6b-9745-ec1d7752f298' }
     let(:person_id) { 'c945d6fe-929e-11e3-a2e9-12313d316c29' }
-    let(:tagging_data) { { identifiers: ["external_system:123"] } }
+    let(:tagging_data) { { identifiers: ['external_system:123'] } }
     let(:request_body) do
       {
-        identifiers: ["external_system:123"],
+        identifiers: ['external_system:123'],
         _links: {
           'osdi:person' => {
             href: "https://actionnetwork.org/api/v2/people/#{person_id}"

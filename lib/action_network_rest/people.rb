@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActionNetworkRest
   class People < Base
     def base_path
@@ -5,17 +7,15 @@ module ActionNetworkRest
     end
 
     def create(person_data, tags: [])
-      post_body = {'person' => person_data}
-      if tags.any?
-        post_body['add_tags'] = tags
-      end
+      post_body = { 'person' => person_data }
+      post_body['add_tags'] = tags if tags.any?
 
       response = client.post_request base_path, post_body
       object_from_response(response)
     end
 
     def unsubscribe(id)
-      request_body = {email_addresses: [{status: 'unsubscribed'}]}
+      request_body = { email_addresses: [{ status: 'unsubscribed' }] }
       response = client.put_request "#{base_path}#{url_escape(id)}", request_body
       object_from_response(response)
     end
@@ -36,9 +36,7 @@ module ActionNetworkRest
       url_encoded_filter_string = url_escape("email_address eq '#{email}'")
       response = client.get_request "#{base_path}?filter=#{url_encoded_filter_string}"
       person_object = response.body[:_embedded][osdi_key].first
-      if person_object.present?
-        set_action_network_id_on_object(person_object)
-      end
+      set_action_network_id_on_object(person_object) if person_object.present?
     end
 
     def update(id, person_data)

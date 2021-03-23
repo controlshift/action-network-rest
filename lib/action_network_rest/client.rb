@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module ActionNetworkRest
   class Client < Vertebrae::API
     attr_accessor :api_key
 
-    def initialize(options={}, &block)
+    def initialize(options = {}, &block)
       self.api_key = options[:api_key]
       super(options, &block)
     end
@@ -12,7 +14,7 @@ module ActionNetworkRest
         host: 'actionnetwork.org',
         prefix: '/api/v2',
         content_type: 'application/json',
-        additional_headers: {'OSDI-API-Token' => api_key},
+        additional_headers: { 'OSDI-API-Token' => api_key },
         user_agent: 'ruby: ActionNetworkRest'
       }
     end
@@ -31,7 +33,7 @@ module ActionNetworkRest
       @_people ||= ActionNetworkRest::People.new(client: self)
     end
 
-    def petitions(petition_id=nil)
+    def petitions(petition_id = nil)
       if @_petitions&.send(:[], petition_id).nil?
         @_petitions = {} if @_petitions.nil?
 
@@ -41,7 +43,7 @@ module ActionNetworkRest
       @_petitions[petition_id]
     end
 
-    def tags(tag_id=nil)
+    def tags(tag_id = nil)
       if @_tags&.send(:[], tag_id).nil?
         @_tags = {} if @_tags.nil?
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActionNetworkRest
   class EntryPoint < Vertebrae::Model
     def base_path

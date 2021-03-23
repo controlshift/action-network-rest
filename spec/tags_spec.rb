@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe ActionNetworkRest::Tags do
@@ -31,8 +33,8 @@ describe ActionNetworkRest::Tags do
       {
         _embedded: {
           'osdi:tags' => [
-            { identifiers: [ 'action_network:fc0a1ec6-5743-4b98-ae0c-cea8766b2212' ], name: 'Economic Justice' },
-            { identifiers: [ 'action_network:71f8feef-61c8-4e6b-9745-ec1d7752f298' ], name: 'Volunteers' }
+            { identifiers: ['action_network:fc0a1ec6-5743-4b98-ae0c-cea8766b2212'], name: 'Economic Justice' },
+            { identifiers: ['action_network:71f8feef-61c8-4e6b-9745-ec1d7752f298'], name: 'Volunteers' }
           ]
         }
       }.to_json
@@ -40,7 +42,7 @@ describe ActionNetworkRest::Tags do
 
     context 'requesting first page' do
       before :each do
-        stub_actionnetwork_request("/tags/?page=1", method: :get)
+        stub_actionnetwork_request('/tags/?page=1', method: :get)
           .to_return(status: 200, body: response_body)
       end
 
@@ -67,7 +69,7 @@ describe ActionNetworkRest::Tags do
 
     context 'requesting page 10' do
       before :each do
-        stub_actionnetwork_request("/tags/?page=10", method: :get)
+        stub_actionnetwork_request('/tags/?page=10', method: :get)
           .to_return(status: 200, body: response_body)
       end
 
@@ -85,7 +87,7 @@ describe ActionNetworkRest::Tags do
 
   describe '#create' do
     let(:tag_name) { 'Volunteers' }
-    let(:request_body) { {name: tag_name} }
+    let(:request_body) { { name: tag_name } }
     let(:tag_id) { '71f8feef-61c8-4e6b-9745-ec1d7752f298' }
     let(:response_body) do
       {
@@ -109,7 +111,7 @@ describe ActionNetworkRest::Tags do
 
   describe '#find_by_name' do
     before :each do
-      stub_actionnetwork_request("/tags/?page=1", method: :get)
+      stub_actionnetwork_request('/tags/?page=1', method: :get)
         .to_return(status: 200, body: response_body)
     end
 
@@ -126,8 +128,8 @@ describe ActionNetworkRest::Tags do
         {
           _embedded: {
             'osdi:tags' => [
-              { identifiers: [ 'action_network:fc0a1ec6-5743-4b98-ae0c-cea8766b2212' ], name: 'Economic Justice' },
-              { identifiers: [ 'action_network:71f8feef-61c8-4e6b-9745-ec1d7752f298' ], name: 'Volunteers' }
+              { identifiers: ['action_network:fc0a1ec6-5743-4b98-ae0c-cea8766b2212'], name: 'Economic Justice' },
+              { identifiers: ['action_network:71f8feef-61c8-4e6b-9745-ec1d7752f298'], name: 'Volunteers' }
             ]
           }
         }.to_json
@@ -143,7 +145,7 @@ describe ActionNetworkRest::Tags do
 
       context 'no tag matching the name' do
         before :each do
-          stub_actionnetwork_request("/tags/?page=2", method: :get)
+          stub_actionnetwork_request('/tags/?page=2', method: :get)
             .to_return(status: 200, body: {}.to_json)
         end
 
@@ -160,7 +162,7 @@ describe ActionNetworkRest::Tags do
         {
           _embedded: {
             'osdi:tags' => [
-              { identifiers: [ 'action_network:71f8feef-61c8-4e6b-9745-ec1d7752f298' ], name: 'Economic Justice' }
+              { identifiers: ['action_network:71f8feef-61c8-4e6b-9745-ec1d7752f298'], name: 'Economic Justice' }
             ]
           }
         }.to_json
@@ -170,14 +172,14 @@ describe ActionNetworkRest::Tags do
         {
           _embedded: {
             'osdi:tags' => [
-              { identifiers: [ 'action_network:71f8feef-61c8-4e6b-9745-ec1d7752f298' ], name: 'Volunteers' }
+              { identifiers: ['action_network:71f8feef-61c8-4e6b-9745-ec1d7752f298'], name: 'Volunteers' }
             ]
           }
         }.to_json
       end
 
       before :each do
-        stub_actionnetwork_request("/tags/?page=2", method: :get)
+        stub_actionnetwork_request('/tags/?page=2', method: :get)
           .to_return(status: 200, body: second_page_response_body)
       end
 

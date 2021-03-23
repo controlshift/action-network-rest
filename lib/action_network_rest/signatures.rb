@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActionNetworkRest
   class Signatures < Base
     attr_accessor :petition_id
@@ -8,9 +10,7 @@ module ActionNetworkRest
 
     def create(signature_data, tags: [])
       post_body = signature_data
-      if tags.any?
-        post_body['add_tags'] = tags
-      end
+      post_body['add_tags'] = tags if tags.any?
 
       response = client.post_request base_path, post_body
       object_from_response(response)
