@@ -21,6 +21,8 @@ Gem::Specification.new do |spec|
   end
   spec.require_paths = ['lib']
 
+  spec.required_ruby_version = '>= 2.6'
+
   spec.add_runtime_dependency 'vertebrae', '~> 0.6.0'
 
   spec.add_development_dependency 'bundler', '~> 2.1'
@@ -29,5 +31,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'rubocop'
+  spec.add_development_dependency 'rubocop-performance'
   spec.add_development_dependency 'webmock', '~> 3.8.3'
 end
