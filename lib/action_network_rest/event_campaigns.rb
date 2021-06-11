@@ -7,13 +7,12 @@ module ActionNetworkRest
     end
 
     def create(event_campaign_data)
-      response = client.post_request base_path, event_campaign_data
+      response = client.post_request(base_path, event_campaign_data)
       object_from_response(response)
     end
 
     def events
       @_events ||= ActionNetworkRest::Events.new(client: client, event_campaign_id: event_campaign_id)
     end
-
   end
 end
