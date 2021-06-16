@@ -106,6 +106,10 @@ tagging = client.tags(tag_id).taggings.get(tagging_id)
 
 # Delete a Tagging
 client.tags(tag_id).taggings.delete(tagging_id)
+
+# look up events in an event campaign 'foo'
+event_campaign_id = 'foo'
+client.event_campaigns(event_campaign_id).events.list
 ```
 
 ## Development

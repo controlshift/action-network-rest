@@ -8,7 +8,7 @@ module ActionNetworkRest
     end
 
     def list(page: 1)
-      response = client.get_request "#{base_path}?page=#{page}"
+      response = client.get_request "#{base_path}?page=#{url_escape(page)}"
       objects = response.body.dig('_embedded', osdi_key)
       return [] if objects.nil?
 

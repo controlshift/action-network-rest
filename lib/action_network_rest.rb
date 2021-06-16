@@ -18,6 +18,7 @@ require 'action_network_rest/base'
 
 require 'action_network_rest/entry_point'
 require 'action_network_rest/events'
+require 'action_network_rest/event_campaigns'
 require 'action_network_rest/people'
 require 'action_network_rest/petitions'
 require 'action_network_rest/signatures'

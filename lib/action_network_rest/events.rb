@@ -4,6 +4,10 @@ module ActionNetworkRest
   class Events < Base
     attr_accessor :event_campaign_id, :event_id
 
+    def initialize(event_campaign_id = nil, event_id: nil, client:)
+      super(client: client, event_id: event_id, event_campaign_id: event_campaign_id)
+    end
+
     def base_path
       if event_campaign_id.present?
         "event_campaigns/#{url_escape(event_campaign_id)}/events/"
@@ -19,6 +23,12 @@ module ActionNetworkRest
 
     def attendances
       @_attendances ||= ActionNetworkRest::Attendances.new(client: client, event_id: event_id, event_campaign_id: event_campaign_id)
+    end
+
+    private
+
+    def osdi_key
+      'osdi:events'
     end
   end
 end

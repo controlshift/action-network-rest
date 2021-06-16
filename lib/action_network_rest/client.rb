@@ -29,6 +29,16 @@ module ActionNetworkRest
       @_events ||= ActionNetworkRest::Events.new(client: self)
     end
 
+    def event_campaigns(event_campaign_id)
+      if @_event_campaigns&.send(:[], event_campaign_id).nil?
+        @_event_campaigns = {} if @_event_campaigns.nil?
+
+        @_event_campaigns[event_campaign_id] = ActionNetworkRest::EventCampaigns.new(event_campaign_id, client: self)
+      end
+
+      @_event_campaigns[event_campaign_id]
+    end
+
     def entry_point
       @_entry_point ||= ActionNetworkRest::EntryPoint.new(client: self)
     end
