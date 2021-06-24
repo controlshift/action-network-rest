@@ -110,6 +110,9 @@ client.tags(tag_id).taggings.delete(tagging_id)
 # look up events in an event campaign 'foo'
 event_campaign_id = 'foo'
 client.event_campaigns(event_campaign_id).events.list
+
+# add an attenance
+client.events('bar').attendances.create({ person: {email_addresses: [{address: 'alice@example.com'}]}})
 ```
 
 ## Development
