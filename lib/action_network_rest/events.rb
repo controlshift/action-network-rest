@@ -4,7 +4,7 @@ module ActionNetworkRest
   class Events < Base
     attr_accessor :event_campaign_id, :event_id
 
-    def initialize(event_campaign_id = nil, event_id: nil, client:)
+    def initialize(event_campaign_id: nil, event_id: nil, client:)
       super(client: client, event_id: event_id, event_campaign_id: event_campaign_id)
     end
 

@@ -20,8 +20,8 @@ module ActionNetworkRest
       object_from_response(response)
     end
 
-    def events
-      @_events ||= ActionNetworkRest::Events.new(event_campaign_id, client: client)
+    def events(event_id = nil)
+      @_events ||= ActionNetworkRest::Events.new(event_campaign_id: event_campaign_id, event_id: event_id, client: client)
     end
 
     private

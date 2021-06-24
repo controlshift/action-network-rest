@@ -25,8 +25,14 @@ module ActionNetworkRest
 
     ## Helpers to let users do things like `an_client.people.create(params)`
 
-    def events
-      @_events ||= ActionNetworkRest::Events.new(client: self)
+    def events(event_id = nil)
+      if @_events&.send(:[], event_id).nil?
+        @_events = {} if @_events.nil?
+
+        @_events[event_id] = ActionNetworkRest::Events.new(event_id: event_id, client: self)
+      end
+
+      @_events[event_id]
     end
 
     def event_campaigns(event_campaign_id = nil)

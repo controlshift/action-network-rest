@@ -16,6 +16,7 @@ require 'action_network_rest/version'
 require 'action_network_rest/client'
 require 'action_network_rest/base'
 
+require 'action_network_rest/attendances'
 require 'action_network_rest/entry_point'
 require 'action_network_rest/events'
 require 'action_network_rest/event_campaigns'
