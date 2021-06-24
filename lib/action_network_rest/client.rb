@@ -29,7 +29,7 @@ module ActionNetworkRest
       @_events ||= ActionNetworkRest::Events.new(client: self)
     end
 
-    def event_campaigns(event_campaign_id)
+    def event_campaigns(event_campaign_id = nil)
       if @_event_campaigns&.send(:[], event_campaign_id).nil?
         @_event_campaigns = {} if @_event_campaigns.nil?
 

@@ -23,5 +23,12 @@ module ActionNetworkRest
     def events
       @_events ||= ActionNetworkRest::Events.new(event_campaign_id, client: client)
     end
+
+    private
+
+    def osdi_key
+      'action_network:event_campaigns'
+    end
+
   end
 end
