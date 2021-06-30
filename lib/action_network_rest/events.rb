@@ -22,7 +22,8 @@ module ActionNetworkRest
     end
 
     def attendances
-      @_attendances ||= ActionNetworkRest::Attendances.new(client: client, event_id: event_id, event_campaign_id: event_campaign_id)
+      @_attendances ||= ActionNetworkRest::Attendances.new(client: client, event_id: event_id,
+                                                           event_campaign_id: event_campaign_id)
     end
 
     private

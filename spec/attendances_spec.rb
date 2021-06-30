@@ -47,7 +47,8 @@ describe ActionNetworkRest::Attendances do
       let(:event_campaign_id) { 'abc123' }
 
       let!(:post_stub) do
-        stub_actionnetwork_request("/event_campaigns/#{event_campaign_id}/events/#{event_id}/attendances/", method: :post, body: request_body)
+        stub_actionnetwork_request("/event_campaigns/#{event_campaign_id}/events/#{event_id}/attendances/",
+                                   method: :post, body: request_body)
           .to_return(status: 200, body: response_body)
       end
 
@@ -61,4 +62,3 @@ describe ActionNetworkRest::Attendances do
     end
   end
 end
-

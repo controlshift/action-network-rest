@@ -21,7 +21,8 @@ module ActionNetworkRest
     end
 
     def events(event_id = nil)
-      @_events ||= ActionNetworkRest::Events.new(event_campaign_id: event_campaign_id, event_id: event_id, client: client)
+      @_events ||= ActionNetworkRest::Events.new(event_campaign_id: event_campaign_id, event_id: event_id,
+                                                 client: client)
     end
 
     private
@@ -29,6 +30,5 @@ module ActionNetworkRest
     def osdi_key
       'action_network:event_campaigns'
     end
-
   end
 end

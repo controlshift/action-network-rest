@@ -30,7 +30,8 @@ describe ActionNetworkRest::Events do
     end
 
     it 'should support event_campaign listing' do
-      stub_request = stub_actionnetwork_request('/event_campaigns/foo/events/?page=1', method: :get).to_return(status: 200, body: response_body)
+      stub_request = stub_actionnetwork_request('/event_campaigns/foo/events/?page=1',
+                                                method: :get).to_return(status: 200, body: response_body)
 
       subject.event_campaigns('foo').events.list
 
@@ -38,7 +39,8 @@ describe ActionNetworkRest::Events do
     end
 
     it 'should paginate' do
-      stub_request = stub_actionnetwork_request('/events/?page=2', method: :get).to_return(status: 200, body: response_body)
+      stub_request = stub_actionnetwork_request('/events/?page=2', method: :get).to_return(status: 200,
+                                                                                           body: response_body)
       subject.events.list(page: 2)
       expect(stub_request).to have_been_requested
     end
