@@ -92,6 +92,43 @@ describe ActionNetworkRest::Events do
         expect(event.action_network_id).to eq '123-456-789-abc'
       end
     end
+
+    context 'with an organizer_person_id' do
+      let(:person_id) { 'c945d6fe-929e-11e3-a2e9-12313d316c29' }
+      let(:person_url) { "https://actionnetwork.org/api/v2/people/#{person_id}" }
+      let(:request_body) do
+        event_data.merge({ '_links' => { 'osdi:organizer' => { 'href' => person_url } } })
+      end
+
+      it 'should include a link to the organizer' do
+        event = subject.events.create(event_data, organizer_person_id: person_id)
+
+        expect(post_stub).to have_been_requested
+
+        expect(event.action_network_id).to eq '123-456-789-abc'
+      end
+    end
+
+    context 'with a creator_person_id and an organizer_person_id' do
+      let(:person_1_id) { 'c945d6fe-929e-11e3-a2e9-12313d316c29' }
+      let(:person_1_url) { "https://actionnetwork.org/api/v2/people/#{person_1_id}" }
+      let(:person_2_id) { '186d5368-28d3-4a49-99af-e70e40fadb6b' }
+      let(:person_2_url) { "https://actionnetwork.org/api/v2/people/#{person_2_id}" }
+      let(:request_body) do
+        event_data.merge({ '_links' => {
+          'osdi:creator' => { 'href' => person_1_url },
+          'osdi:organizer' => { 'href' => person_2_url }
+        } })
+      end
+
+      it 'should include links for both creator and organizer' do
+        event = subject.events.create(event_data, creator_person_id: person_1_id, organizer_person_id: person_2_id)
+
+        expect(post_stub).to have_been_requested
+
+        expect(event.action_network_id).to eq '123-456-789-abc'
+      end
+    end
   end
 
   describe '#update' do
