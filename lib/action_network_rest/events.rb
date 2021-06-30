@@ -16,8 +16,14 @@ module ActionNetworkRest
       end
     end
 
-    def create(event_data)
-      response = client.post_request(base_path, event_data)
+    def create(event_data, creator_person_id: nil)
+      post_body = event_data
+      if creator_person_id.present?
+        creator_person_url = action_network_url("/people/#{url_escape(creator_person_id)}")
+        post_body['_links'] = { 'osdi:creator' => { href: creator_person_url } }
+      end
+
+      response = client.post_request(base_path, post_body)
       object_from_response(response)
     end
 

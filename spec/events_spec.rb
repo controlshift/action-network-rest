@@ -76,5 +76,21 @@ describe ActionNetworkRest::Events do
                                                    'somesystem:123')
       expect(event.action_network_id).to eq '123-456-789-abc'
     end
+
+    context 'with a creator_person_id' do
+      let(:person_id) { 'c945d6fe-929e-11e3-a2e9-12313d316c29' }
+      let(:person_url) { "https://actionnetwork.org/api/v2/people/#{person_id}" }
+      let(:request_body) do
+        event_data.merge({ '_links' => { 'osdi:creator' => { 'href' => person_url } } })
+      end
+
+      it 'should include a link to the creator' do
+        event = subject.events.create(event_data, creator_person_id: person_id)
+
+        expect(post_stub).to have_been_requested
+
+        expect(event.action_network_id).to eq '123-456-789-abc'
+      end
+    end
   end
 end
