@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe ActionNetworkRest::Signatures do
+describe ActionNetworkRest::Attendances do
   let(:api_key) { 'secret_key' }
 
   subject { ActionNetworkRest.new(api_key: api_key) }
