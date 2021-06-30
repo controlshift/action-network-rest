@@ -107,12 +107,13 @@ tagging = client.tags(tag_id).taggings.get(tagging_id)
 # Delete a Tagging
 client.tags(tag_id).taggings.delete(tagging_id)
 
-# look up events in an event campaign 'foo'
-event_campaign_id = 'foo'
+# List Events in an Event Campaign
+event_campaign_id = '123e4567-e89b-12d3-a456-426614174000'
 client.event_campaigns(event_campaign_id).events.list
 
-# add an attenance
-client.events('bar').attendances.create({ person: {email_addresses: [{address: 'alice@example.com'}]}})
+# Add an Attendance
+event_id = '123e4567-e89b-12d3-a456-426655440000'
+client.events(event_id).attendances.create({ person: {email_addresses: [{address: 'alice@example.com'}]}})
 ```
 
 ## Development
