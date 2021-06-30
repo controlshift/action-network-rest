@@ -32,6 +32,12 @@ module ActionNetworkRest
                                                            event_campaign_id: event_campaign_id)
     end
 
+    def update(id, event_data)
+      event_path = "#{base_path}#{url_escape(id)}"
+      response = client.put_request event_path, event_data
+      object_from_response(response)
+    end
+
     private
 
     def osdi_key

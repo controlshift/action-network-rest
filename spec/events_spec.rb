@@ -93,4 +93,35 @@ describe ActionNetworkRest::Events do
       end
     end
   end
+
+  describe '#update' do
+    let(:event_data) do
+      {
+        identifiers: ['somesystem:123'],
+        title: 'My Great Event',
+        origin_system: 'Some System'
+      }
+    end
+    let(:event_id) { '123-456-789-abc' }
+    let(:response_body) do
+      {
+        identifiers: ['somesystem:123', 'action_network:123-456-789-abc'],
+        title: 'My Great Event',
+        origin_system: 'Some System'
+      }.to_json
+    end
+    let!(:put_stub) do
+      stub_actionnetwork_request("/events/#{event_id}", method: :put, body: event_data)
+        .to_return(status: 200, body: response_body)
+    end
+
+    it 'should PUT event data' do
+      updated_event = subject.events.update(event_id, event_data)
+
+      expect(put_stub).to have_been_requested
+
+      expect(updated_event.identifiers).to contain_exactly('action_network:123-456-789-abc',
+                                                           'somesystem:123')
+    end
+  end
 end
