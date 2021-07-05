@@ -38,4 +38,35 @@ describe ActionNetworkRest::EventCampaigns do
       expect(stub_request).to have_been_requested
     end
   end
+
+  describe '#update' do
+    let(:campaign_data) do
+      {
+        identifiers: ['somesystem:123'],
+        title: 'My Great Event Campaign',
+        origin_system: 'Some System'
+      }
+    end
+    let(:campaign_id) { '2df5eb21-535a-433e-8440-a8a3f2107643' }
+    let(:response_body) do
+      {
+        identifiers: ['somesystem:123', "action_network:#{campaign_id}"],
+        title: 'My Great Event Campaign',
+        origin_system: 'Some System'
+      }.to_json
+    end
+    let!(:put_stub) do
+      stub_actionnetwork_request("/event_campaigns/#{campaign_id}", method: :put, body: campaign_data)
+        .to_return(status: 200, body: response_body)
+    end
+
+    it 'should PUT event campaign data' do
+      updated_event_campaign = subject.event_campaigns.update(campaign_id, campaign_data)
+
+      expect(put_stub).to have_been_requested
+
+      expect(updated_event_campaign.identifiers).to contain_exactly("action_network:#{campaign_id}",
+                                                                    'somesystem:123')
+    end
+  end
 end

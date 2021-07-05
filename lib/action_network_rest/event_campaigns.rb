@@ -20,6 +20,12 @@ module ActionNetworkRest
       object_from_response(response)
     end
 
+    def update(id, event_campaign_data)
+      event_campaign_path = "#{base_path}#{url_escape(id)}"
+      response = client.put_request event_campaign_path, event_campaign_data
+      object_from_response(response)
+    end
+
     def events(event_id = nil)
       @_events ||= ActionNetworkRest::Events.new(event_campaign_id: event_campaign_id, event_id: event_id,
                                                  client: client)
