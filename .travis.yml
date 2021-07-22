@@ -1,9 +1,0 @@
-language: ruby
-rvm:
-  - 2.7
-cache: bundler
-before_install:
-  - gem install bundler
-script:
-  - bundle exec rspec
-  - bundle exec rubocop

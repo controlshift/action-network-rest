@@ -115,10 +115,12 @@ describe ActionNetworkRest::Events do
       let(:person_2_id) { '186d5368-28d3-4a49-99af-e70e40fadb6b' }
       let(:person_2_url) { "https://actionnetwork.org/api/v2/people/#{person_2_id}" }
       let(:request_body) do
-        event_data.merge({ '_links' => {
-          'osdi:creator' => { 'href' => person_1_url },
-          'osdi:organizer' => { 'href' => person_2_url }
-        } })
+        event_data.merge({
+                           '_links' => {
+                             'osdi:creator' => { 'href' => person_1_url },
+                             'osdi:organizer' => { 'href' => person_2_url }
+                           }
+                         })
       end
 
       it 'should include links for both creator and organizer' do

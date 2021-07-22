@@ -2,7 +2,7 @@
 
 Ruby client for interacting with the [ActionNetwork REST API](https://actionnetwork.org/docs/) from the engineering team at [ControlShift](https://www.controlshiftlabs.com/).
 
-[![Build Status](https://travis-ci.org/controlshift/action-network-rest.svg?branch=master)](https://travis-ci.org/controlshift/action-network-rest)
+[![CI Status](https://github.com/controlshift/action-network-rest/actions/workflows/ci.yml/badge.svg)](https://github.com/controlshift/action-network-rest/actions/workflows/ci.yml)
 
 ## Installation
 
