@@ -13,6 +13,8 @@ module ActionNetworkRest
 end
 
 require 'action_network_rest/version'
+require 'action_network_rest/api'
+require 'action_network_rest/response/raise_error'
 require 'action_network_rest/client'
 require 'action_network_rest/base'
 

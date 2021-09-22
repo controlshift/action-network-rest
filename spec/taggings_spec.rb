@@ -126,9 +126,11 @@ describe ActionNetworkRest::Taggings do
       }.to_json
     end
 
+    let(:response_code) { 200 }
+
     let!(:post_stub) do
       stub_actionnetwork_request("/tags/#{tag_id}/taggings/", method: :post, body: request_body)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: response_code, body: response_body)
     end
 
     it 'should POST tagging data' do
@@ -137,6 +139,24 @@ describe ActionNetworkRest::Taggings do
       expect(post_stub).to have_been_requested
 
       expect(tagging.action_network_id).to eq tagging_id
+    end
+
+    context 'when ActionNetwork says the person being tagged does not exist' do
+      let(:response_code) { 400 }
+      let(:response_body) { '{"error":"You must specify a valid person id"}' }
+
+      it 'should raise a typed exception' do
+        expect { subject.tags(tag_id).taggings.create(tagging_data, person_id: person_id) }.to raise_error(ActionNetworkRest::Response::MustSpecifyValidPersonId)
+      end
+    end
+
+    context 'when ActionNetwork returns an invalid response' do
+      let(:response_code) { 500 }
+      let(:response_body) { '{"error":"oh noes!"}' }
+
+      it 'should raise a more generic exception' do
+        expect { subject.tags(tag_id).taggings.create(tagging_data, person_id: person_id) }.to raise_error(ActionNetworkRest::Response::ResponseError)
+      end
     end
   end
 

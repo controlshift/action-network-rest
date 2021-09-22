@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ActionNetworkRest
-  class Client < Vertebrae::API
+  class Client < API
     attr_accessor :api_key
 
     def initialize(options = {}, &block)
