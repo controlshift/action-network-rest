@@ -3,6 +3,7 @@
 module ActionNetworkRest
   module Response
     class RaiseError < Faraday::Response::Middleware
+      # rubocop:disable Style/GuardClause
       def on_complete(response)
         status_code = response[:status].to_i
 
@@ -19,6 +20,7 @@ module ActionNetworkRest
           end
         end
       end
+      # rubocop:enable Style/GuardClause
 
       def error_message(response)
         "#{response[:method].to_s.upcase} #{response[:url]}: #{response[:status]} \n\n #{response[:body]}"
