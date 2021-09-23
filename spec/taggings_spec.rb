@@ -146,7 +146,10 @@ describe ActionNetworkRest::Taggings do
       let(:response_body) { '{"error":"You must specify a valid person id"}' }
 
       it 'should raise a typed exception' do
-        expect { subject.tags(tag_id).taggings.create(tagging_data, person_id: person_id) }.to raise_error(ActionNetworkRest::Response::MustSpecifyValidPersonId)
+        expect do
+          subject.tags(tag_id).taggings.create(tagging_data,
+                                               person_id: person_id)
+        end.to raise_error(ActionNetworkRest::Response::MustSpecifyValidPersonId)
       end
     end
 
@@ -155,7 +158,10 @@ describe ActionNetworkRest::Taggings do
       let(:response_body) { '{"error":"oh noes!"}' }
 
       it 'should raise a more generic exception' do
-        expect { subject.tags(tag_id).taggings.create(tagging_data, person_id: person_id) }.to raise_error(ActionNetworkRest::Response::ResponseError)
+        expect do
+          subject.tags(tag_id).taggings.create(tagging_data,
+                                               person_id: person_id)
+        end.to raise_error(ActionNetworkRest::Response::ResponseError)
       end
     end
   end

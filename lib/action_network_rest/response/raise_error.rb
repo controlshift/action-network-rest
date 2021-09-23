@@ -6,8 +6,8 @@ module ActionNetworkRest
       def on_complete(response)
         status_code = response[:status].to_i
 
-        if (400...600).include? status_code
-          if status_code == 400 && response[:body] =~ /"error"/
+        if (400...600).cover? status_code
+          if status_code == 400 && response[:body].include?('error')
             error_hsh = JSON.parse(response[:body])
             error_message = error_hsh['error']
 
@@ -26,6 +26,7 @@ module ActionNetworkRest
     end
 
     class MustSpecifyValidPersonId < StandardError; end
+
     class ResponseError < StandardError; end
   end
 end
