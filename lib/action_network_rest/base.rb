@@ -23,7 +23,7 @@ module ActionNetworkRest
       CGI.escape(string.to_s)
     end
 
-    def set_action_network_id_on_object(obj)
+    def set_action_network_id_on_object(obj, action_network_id_required: false)
       # Takes an object which may contain an `identifiers` key, which may contain an action_network identifier
       # If so, we pull out the action_network identifier and stick it in a top-level key "action_network_id",
       # for the convenience of callers using the returned object.
@@ -38,14 +38,16 @@ module ActionNetworkRest
       end
       if qualified_actionnetwork_id.present?
         obj.action_network_id = qualified_actionnetwork_id.sub(/^action_network:/, '')
+      elsif action_network_id_required
+        raise ActionNetworkRest::Response::MissingActionNetworkId, obj.inspect
       end
 
       obj
     end
 
-    def object_from_response(response)
+    def object_from_response(response, action_network_id_required: false)
       obj = response.body
-      set_action_network_id_on_object(obj)
+      set_action_network_id_on_object(obj, action_network_id_required: action_network_id_required)
     end
 
     def action_network_url(path)

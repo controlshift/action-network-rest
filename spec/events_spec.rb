@@ -131,6 +131,24 @@ describe ActionNetworkRest::Events do
         expect(event.action_network_id).to eq '123-456-789-abc'
       end
     end
+
+    context 'no action network id on response' do
+      let(:response_body) do
+        {
+          identifiers: ['somesystem:123'],
+          title: 'My Great Event',
+          origin_system: 'Some System'
+        }.to_json
+      end
+
+      it 'should raise' do
+        expect do
+          subject.events.create(event_data)
+        end.to raise_error(ActionNetworkRest::Response::MissingActionNetworkId)
+
+        expect(post_stub).to have_been_requested
+      end
+    end
   end
 
   describe '#update' do

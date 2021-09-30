@@ -29,6 +29,8 @@ module ActionNetworkRest
       end
     end
 
+    class MissingActionNetworkId < StandardError; end
+
     class MustSpecifyValidPersonId < StandardError; end
 
     class NotFoundError < StandardError; end
