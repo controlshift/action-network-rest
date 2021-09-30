@@ -51,7 +51,8 @@ describe ActionNetworkRest::Attendances do
       let(:response_body) { {}.to_json }
 
       it 'should raise error' do
-        expect { subject.events(event_id).attendances.create(attendance_data) }.to raise_error(ActionNetworkRest::Attendances::CreateError)
+        expect { subject.events(event_id).attendances.create(attendance_data) }
+          .to(raise_error(ActionNetworkRest::Attendances::CreateError))
       end
     end
 

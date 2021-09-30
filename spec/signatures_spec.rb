@@ -141,7 +141,8 @@ describe ActionNetworkRest::Signatures do
       let(:response_body) { {}.to_json }
 
       it 'should raise error' do
-        expect { subject.petitions(petition_id).signatures.create(signature_data) }.to raise_error(ActionNetworkRest::Signatures::CreateError)
+        expect { subject.petitions(petition_id).signatures.create(signature_data) }
+          .to(raise_error(ActionNetworkRest::Signatures::CreateError))
       end
     end
 
