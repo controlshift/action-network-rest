@@ -15,6 +15,8 @@ module ActionNetworkRest
             if error_message == 'You must specify a valid person id'
               raise MustSpecifyValidPersonId, error_message(response)
             end
+          elsif status_code == 404
+            raise NotFoundError, error_message(response)
           else
             raise ResponseError, error_message(response)
           end
@@ -28,6 +30,8 @@ module ActionNetworkRest
     end
 
     class MustSpecifyValidPersonId < StandardError; end
+
+    class NotFoundError < StandardError; end
 
     class ResponseError < StandardError; end
   end

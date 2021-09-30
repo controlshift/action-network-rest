@@ -43,6 +43,19 @@ describe ActionNetworkRest::Attendances do
       expect(attendance.action_network_id).to eq(attendance_id)
     end
 
+    # Action Network treats the attendance create helper endpoint as an unauthenticated
+    # "blind" POST (see https://actionnetwork.org/docs/v2/unauthenticated-post/). For this
+    # reason they don't return a status code with error to avoid leaking private data. Instead
+    # they return 200 OK with an empty body (vs. the newly created attendance's data for successful calls)
+    context 'response body is empty' do
+      let(:response_body) { {}.to_json }
+
+      it 'should raise error' do
+        expect { subject.events(event_id).attendances.create(attendance_data) }
+          .to(raise_error(ActionNetworkRest::Attendances::CreateError))
+      end
+    end
+
     context 'when part of an event campaign' do
       let(:event_campaign_id) { 'abc123' }
 
