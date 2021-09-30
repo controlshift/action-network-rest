@@ -133,6 +133,18 @@ describe ActionNetworkRest::Signatures do
       expect(signature.action_network_id).to eq signature_id
     end
 
+    # Action Network treats the signature create helper endpoint as an unauthenticated
+    # "blind" POST (see https://actionnetwork.org/docs/v2/unauthenticated-post/). For this
+    # reason they don't return a status code with error to avoid leaking private data. Instead
+    # they return 200 OK with an empty body (vs. the newly created signature's data for successful calls)
+    context 'response body is empty' do
+      let(:response_body) { {}.to_json }
+
+      it 'should raise error' do
+        expect { subject.petitions(petition_id).signatures.create(signature_data) }.to raise_error(ActionNetworkRest::Signatures::CreateError)
+      end
+    end
+
     context 'with tags' do
       let(:request_body) { signature_data.merge(add_tags: %w[foo bar]) }
 
