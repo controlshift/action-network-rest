@@ -32,7 +32,7 @@ module ActionNetworkRest
       end
 
       response = client.post_request(base_path, post_body)
-      object_from_response(response)
+      object_from_response(response, action_network_id_required: true)
     end
 
     def attendances
