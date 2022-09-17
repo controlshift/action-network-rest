@@ -17,6 +17,19 @@ module ActionNetworkRest
       objects
     end
 
+    def all
+      page_number = 1
+      all = []
+      loop do
+        page = list(page: page_number)
+        break if page.empty?
+
+        all.concat(page)
+        page_number += 1
+      end
+      all
+    end
+
     private
 
     def url_escape(string)
