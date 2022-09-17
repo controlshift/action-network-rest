@@ -136,6 +136,19 @@ client.advocacy_campaigns.update('123e4567-e89b-12d3-a456-426614174000', {
   title: "My Free Advocacy Campaign With A New Name",
   description: "This is my free advocacy campaign description"
 })
+
+# Get, list, list all, create or update formss
+client.form.list
+client.form.all
+client.form.create('123e4567-e89b-12d3-a456-426614174000', {	
+  title: "My Free Form",
+  origin_system: "FreeForm.com"
+})
+client.form.get('123e4567-e89b-12d3-a456-426614174000')
+client.form.update('123e4567-e89b-12d3-a456-426614174000', {	
+  title: "My Free Form With A New Name",
+  description: "This is my free form description"
+})
 ```
 
 ## Development

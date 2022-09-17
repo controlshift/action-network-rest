@@ -57,6 +57,10 @@ module ActionNetworkRest
       @_entry_point ||= ActionNetworkRest::EntryPoint.new(client: self)
     end
 
+    def forms
+      @_forms ||= ActionNetworkRest::Forms.new(client: self)
+    end
+    
     def people
       @_people ||= ActionNetworkRest::People.new(client: self)
     end
