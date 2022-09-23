@@ -126,7 +126,7 @@ client.campaigns.all
 # Get, list, list all, create or update Advocacy Campaigns
 client.advocacy_campaigns.list
 client.advocacy_campaigns.all
-client.advocacy_campaigns.create('123e4567-e89b-12d3-a456-426614174000', {	
+client.advocacy_campaigns.create({	
   title: "My Free Advocacy Campaign",
   origin_system: "FreeAdvocacy.com",
   type: "email"
@@ -140,7 +140,7 @@ client.advocacy_campaigns.update('123e4567-e89b-12d3-a456-426614174000', {
 # Get, list, list all, create or update formss
 client.form.list
 client.form.all
-client.form.create('123e4567-e89b-12d3-a456-426614174000', {	
+client.form.create({	
   title: "My Free Form",
   origin_system: "FreeForm.com"
 })

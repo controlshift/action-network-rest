@@ -18,14 +18,44 @@ module ActionNetworkRest
     end
 
     def all
+      min_wait = 0.25 # sec to wait between calls
+      timestamp = Time.now.to_r # secs since Unix Epoch
       page_number = 1
+      tries = 0
       all = []
       loop do
-        page = list(page: page_number)
+        # Limit rate before request to avoid error
+        wait = min_wait * (1.5**tries)
+        new_time = Time.now.to_r
+        if (timestamp + min_wait - new_time).positive?
+          sleep(wait) # Wait if calling again could excede the rate limit
+          tries += 1
+          next # check again
+        end
+
+        begin
+          page = list(page: page_number)
+        rescue ActionNetworkRest::Response::TooManyRequests
+          if tries >= 10
+            raise ActionNetworkRest::Response::UsedAllRequestTries,
+                  {
+                    tries: tries,
+                    last_wait_length: wait,
+                    resource: base_path
+                  }.to_json
+          end
+
+          sleep(wait)
+          tries += 1 # Exponential back off if got Too Many Requests error reponse
+          next
+        end
+        timestamp = Time.now.to_i
+
         break if page.empty?
 
         all.concat(page)
         page_number += 1
+        tries = 0
       end
       all
     end

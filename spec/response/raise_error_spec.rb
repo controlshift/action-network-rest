@@ -21,6 +21,14 @@ describe ActionNetworkRest::Response::RaiseError do
       expect { subject.on_complete(response) }.to raise_error(ActionNetworkRest::Response::NotFoundError, /Not found/)
     end
 
+    it 'should raise TooManyRequests if status is 429' do
+      response = { status: '429', body: { error: 'Too many requests' }.to_json }
+
+      expect do
+        subject.on_complete(response)
+      end.to raise_error(ActionNetworkRest::Response::TooManyRequests, /Too many requests/)
+    end
+
     %w[418 500].each do |generic_error_code|
       it "should raise ResponseError for generic error with status #{generic_error_code}" do
         response = { status: generic_error_code, body: { error: 'Something went wrong' }.to_json }
