@@ -49,7 +49,7 @@ module ActionNetworkRest
           tries += 1 # Exponential back off if got Too Many Requests error reponse
           next
         end
-        timestamp = Time.now.to_i
+        timestamp = Time.now.to_r
 
         break if page.empty?
 
