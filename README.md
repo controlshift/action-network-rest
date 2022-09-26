@@ -22,7 +22,7 @@ Or install it yourself as:
 
 ## Usage
 
-```
+```ruby
 require 'action_network_rest'
 
 client = ActionNetworkRest.new(api_key: YOUR_API_KEY)
@@ -39,6 +39,9 @@ person_id = person.action_network_id
 
 # List people
 people = client.people.list
+
+# List all people
+people = client.people.all
 
 # Iterate over a list of people
 page_number = 1
@@ -114,6 +117,38 @@ client.event_campaigns(event_campaign_id).events.list
 # Add an Attendance
 event_id = '123e4567-e89b-12d3-a456-426655440000'
 client.events(event_id).attendances.create({ person: {email_addresses: [{address: 'alice@example.com'}]}})
+
+# Get, list, or list all campaigns
+client.campaigns.get('123e4567-e89b-12d3-a456-426614174000')
+client.campaigns.list
+client.campaigns.all
+
+# Get, list, list all, create or update Advocacy Campaigns
+client.advocacy_campaigns.list
+client.advocacy_campaigns.all
+client.advocacy_campaigns.create({	
+  title: "My Free Advocacy Campaign",
+  origin_system: "FreeAdvocacy.com",
+  type: "email"
+})
+client.advocacy_campaigns.get('123e4567-e89b-12d3-a456-426614174000')
+client.advocacy_campaigns.update('123e4567-e89b-12d3-a456-426614174000', {	
+  title: "My Free Advocacy Campaign With A New Name",
+  description: "This is my free advocacy campaign description"
+})
+
+# Get, list, list all, create or update formss
+client.form.list
+client.form.all
+client.form.create({	
+  title: "My Free Form",
+  origin_system: "FreeForm.com"
+})
+client.form.get('123e4567-e89b-12d3-a456-426614174000')
+client.form.update('123e4567-e89b-12d3-a456-426614174000', {	
+  title: "My Free Form With A New Name",
+  description: "This is my free form description"
+})
 ```
 
 ## Development

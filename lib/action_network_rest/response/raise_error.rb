@@ -17,6 +17,8 @@ module ActionNetworkRest
             end
           elsif status_code == 404
             raise NotFoundError, error_message(response)
+          elsif status_code == 429
+            raise TooManyRequests, error_message(response)
           else
             raise ResponseError, error_message(response)
           end
@@ -36,5 +38,9 @@ module ActionNetworkRest
     class NotFoundError < StandardError; end
 
     class ResponseError < StandardError; end
+
+    class TooManyRequests < StandardError; end
+
+    class UsedAllRequestTries < StandardError; end
   end
 end

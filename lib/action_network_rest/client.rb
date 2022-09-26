@@ -25,6 +25,14 @@ module ActionNetworkRest
 
     ## Helpers to let users do things like `an_client.people.create(params)`
 
+    def advocacy_campaigns
+      @_advocacy_campaigns ||= ActionNetworkRest::AdvocacyCampaigns.new(client: self)
+    end
+
+    def campaigns
+      @_campaigns ||= ActionNetworkRest::Campaigns.new(client: self)
+    end
+
     def events(event_id = nil)
       if @_events&.send(:[], event_id).nil?
         @_events = {} if @_events.nil?
@@ -49,6 +57,10 @@ module ActionNetworkRest
       @_entry_point ||= ActionNetworkRest::EntryPoint.new(client: self)
     end
 
+    def forms
+      @_forms ||= ActionNetworkRest::Forms.new(client: self)
+    end
+    
     def people
       @_people ||= ActionNetworkRest::People.new(client: self)
     end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require 'json'
 
 describe ActionNetworkRest::People do
   let(:api_key) { 'secret_key' }
@@ -278,6 +279,29 @@ describe ActionNetworkRest::People do
       expect(put_stub).to have_been_requested
 
       expect(updated_person.family_name).to eq(person_data[:family_name])
+    end
+  end
+
+  describe '#all' do
+    let(:response_body) do
+      {
+        error: 'Too many requests'
+      }.to_json
+    end
+    let!(:get_stub) do
+      stub_actionnetwork_request('/people/?page=1', method: :get)
+        .to_return(status: 429, body: response_body)
+    end
+
+    it 'should return error after trying 10 times' do
+      subject.people.all
+    rescue StandardError => e
+      expect(e.class).to eq(ActionNetworkRest::Response::UsedAllRequestTries)
+      message = JSON.parse(e.message)
+      puts e.message
+      puts message['tries']
+      expect(message['tries']).to eq(10)
+      expect(message['last_wait_length']).to eq(0.25 * (1.5**10))
     end
   end
 end
