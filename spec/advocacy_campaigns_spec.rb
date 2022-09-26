@@ -433,7 +433,7 @@ describe ActionNetworkRest::AdvocacyCampaigns do
   end
 
   describe '#create' do
-    let (:advocacy_campaign_data) do
+    let(:advocacy_campaign_data) do
       {
         identifiers: ['somesystem:123'],
         title: 'My Free Advocacy Campaign',
@@ -721,7 +721,9 @@ describe ActionNetworkRest::AdvocacyCampaigns do
       }.to_json
     end
     let!(:put_stub) do
-      stub_actionnetwork_request("/advocacy_campaigns/#{advocacy_campaign_id}", method: :put, body: advocacy_campaign_data)
+      stub_actionnetwork_request("/advocacy_campaigns/#{advocacy_campaign_id}",
+                                 method: :put,
+                                 body: advocacy_campaign_data)
         .to_return(status: 200, body: response_body)
     end
 
@@ -730,8 +732,10 @@ describe ActionNetworkRest::AdvocacyCampaigns do
 
       expect(put_stub).to have_been_requested
 
-      expect(updated_advocacy_campaign.identifiers).to contain_exactly('action_network:d8fff9ec-78a4-4c3d-a724-d4bb751abfbb',
-                                                                       'somesystem:123')
+      expect(updated_advocacy_campaign.identifiers).to(
+        contain_exactly('action_network:d8fff9ec-78a4-4c3d-a724-d4bb751abfbb',
+                        'somesystem:123')
+      )
     end
   end
 end
