@@ -20,7 +20,7 @@ describe ActionNetworkRest::Signatures do
 
     before :each do
       stub_actionnetwork_request("/petitions/#{petition_id}/signatures/#{signature_id}", method: :get)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should retrieve signature data' do
@@ -54,7 +54,7 @@ describe ActionNetworkRest::Signatures do
     context 'requesting first page' do
       before :each do
         stub_actionnetwork_request("/petitions/#{petition_id}/signatures/?page=1", method: :get)
-          .to_return(status: 200, body: response_body)
+          .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
       end
 
       it 'should retrieve the signatures data from first page when calling without an argument' do
@@ -81,7 +81,7 @@ describe ActionNetworkRest::Signatures do
     context 'requesting page 10' do
       before :each do
         stub_actionnetwork_request("/petitions/#{petition_id}/signatures/?page=10", method: :get)
-          .to_return(status: 200, body: response_body)
+          .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
       end
 
       it 'should retrieve the signatures data from requested page number' do
@@ -122,7 +122,7 @@ describe ActionNetworkRest::Signatures do
 
     let!(:post_stub) do
       stub_actionnetwork_request("/petitions/#{petition_id}/signatures/", method: :post, body: request_body)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should POST signature data' do
@@ -178,7 +178,7 @@ describe ActionNetworkRest::Signatures do
     let!(:put_stub) do
       stub_actionnetwork_request("/petitions/#{petition_id}/signatures/#{signature_id}",
                                  method: :put, body: signature_data)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should PUT signature data' do

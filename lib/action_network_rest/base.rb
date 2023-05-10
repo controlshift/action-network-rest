@@ -28,7 +28,7 @@ module ActionNetworkRest
         wait = min_wait * (1.5**tries)
         new_time = Time.now.to_r
         if (timestamp + min_wait - new_time).positive?
-          sleep(wait) # Wait if calling again could excede the rate limit
+          sleep(wait) # Wait if calling again could exceed the rate limit
           tries += 1
           next # check again
         end
@@ -46,7 +46,7 @@ module ActionNetworkRest
           end
 
           sleep(wait)
-          tries += 1 # Exponential back off if got Too Many Requests error reponse
+          tries += 1 # Exponential back off if got Too Many Requests error response
           next
         end
         timestamp = Time.now.to_r

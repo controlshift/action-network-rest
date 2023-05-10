@@ -2,7 +2,7 @@
 
 module ActionNetworkRest
   module Response
-    class RaiseError < Faraday::Response::Middleware
+    class RaiseError < Faraday::Middleware
       # rubocop:disable Style/GuardClause
       def on_complete(response)
         status_code = response[:status].to_i
@@ -44,3 +44,5 @@ module ActionNetworkRest
     class UsedAllRequestTries < StandardError; end
   end
 end
+
+Faraday::Response.register_middleware actionnetwork_raise_error: -> { ActionNetworkRest::Response::RaiseError }

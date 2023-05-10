@@ -20,7 +20,7 @@ describe ActionNetworkRest::Petitions do
 
     before :each do
       stub_actionnetwork_request("/petitions/#{petition_id}", method: :get)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should retrieve petition data' do
@@ -50,7 +50,7 @@ describe ActionNetworkRest::Petitions do
     context 'requesting first page' do
       before :each do
         stub_actionnetwork_request('/petitions/?page=1', method: :get)
-          .to_return(status: 200, body: response_body)
+          .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
       end
 
       it 'should retrieve the petitions data from first page when calling without an argument' do
@@ -77,7 +77,7 @@ describe ActionNetworkRest::Petitions do
     context 'requesting page 10' do
       before :each do
         stub_actionnetwork_request('/petitions/?page=10', method: :get)
-          .to_return(status: 200, body: response_body)
+          .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
       end
 
       it 'should retrieve the petitions data from requested page number' do
@@ -110,7 +110,7 @@ describe ActionNetworkRest::Petitions do
     end
     let!(:post_stub) do
       stub_actionnetwork_request('/petitions/', method: :post, body: request_body)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should POST petition data' do
@@ -158,7 +158,7 @@ describe ActionNetworkRest::Petitions do
     end
     let!(:put_stub) do
       stub_actionnetwork_request("/petitions/#{petition_id}", method: :put, body: petition_data)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should PUT petition data' do
