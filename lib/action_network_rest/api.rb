@@ -3,17 +3,15 @@
 module ActionNetworkRest
   class API < Vertebrae::API
     def setup
-      connection.stack do |builder|
-        builder.use Faraday::Request::Multipart
-        builder.use Faraday::Request::UrlEncoded
+      connection.faraday_connection = Faraday.new(connection.configuration.faraday_options) do |f|
+        f.request :multipart
+        f.request :url_encoded
 
-        builder.use Faraday::Response::Logger if ENV['DEBUG']
+        f.response :mashify
+        f.response :json
 
-        builder.use FaradayMiddleware::Mashify
-        builder.use FaradayMiddleware::ParseJson
-
-        builder.use ActionNetworkRest::Response::RaiseError
-        builder.adapter connection.configuration.adapter
+        f.response :actionnetwork_raise_error
+        f.adapter connection.configuration.adapter
       end
     end
   end

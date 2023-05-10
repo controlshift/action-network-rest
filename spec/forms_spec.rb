@@ -140,7 +140,7 @@ describe ActionNetworkRest::Forms do
 
     before :each do
       stub_actionnetwork_request("/forms/#{form_id}", method: :get)
-        .to_return(status: status, body: response_body)
+        .to_return(status: status, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should retrieve form data' do
@@ -396,7 +396,7 @@ describe ActionNetworkRest::Forms do
     context 'requesting first page' do
       before :each do
         stub_actionnetwork_request('/forms/?page=1', method: :get)
-          .to_return(status: 200, body: response_body)
+          .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
       end
 
       it 'should retrieve first page when calling without page as argument' do
@@ -417,7 +417,7 @@ describe ActionNetworkRest::Forms do
     context 'requesting page 3 forms' do
       before :each do
         stub_actionnetwork_request('/forms/?page=3', method: :get)
-          .to_return(status: 200, body: response_body)
+          .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
       end
 
       it 'should retreive the forms data from page 3' do
@@ -563,7 +563,7 @@ describe ActionNetworkRest::Forms do
     end
     let!(:post_stub) do
       stub_actionnetwork_request('/forms/', method: :post, body: request_body)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should POST form data' do
@@ -711,7 +711,7 @@ describe ActionNetworkRest::Forms do
     end
     let!(:put_stub) do
       stub_actionnetwork_request("/forms/#{form_id}", method: :put, body: form_data)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should PUT form data' do

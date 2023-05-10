@@ -11,7 +11,8 @@ describe ActionNetworkRest::EntryPoint do
     let(:response_body) { { some: 'data' }.to_json }
 
     before :each do
-      stub_actionnetwork_request('/', method: :get).to_return(status: 200, body: response_body)
+      stub_actionnetwork_request('/', method: :get)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should return the response' do
@@ -21,7 +22,8 @@ describe ActionNetworkRest::EntryPoint do
 
   describe '#authenticated_successfully?' do
     before :each do
-      stub_actionnetwork_request('/', method: :get).to_return(status: 200, body: response_body)
+      stub_actionnetwork_request('/', method: :get)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     context 'response includes tags' do

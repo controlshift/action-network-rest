@@ -141,7 +141,7 @@ describe ActionNetworkRest::AdvocacyCampaigns do
 
     before :each do
       stub_actionnetwork_request("/advocacy_campaigns/#{advocacy_campaign_id}", method: :get)
-        .to_return(status: status, body: response_body)
+        .to_return(status: status, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should retrieve advocacy_campaign data' do
@@ -399,7 +399,7 @@ describe ActionNetworkRest::AdvocacyCampaigns do
     context 'requesting first page' do
       before :each do
         stub_actionnetwork_request('/advocacy_campaigns/?page=1', method: :get)
-          .to_return(status: 200, body: response_body)
+          .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
       end
 
       it 'should retrieve first page when callig with argument' do
@@ -420,7 +420,7 @@ describe ActionNetworkRest::AdvocacyCampaigns do
     context 'requesting page 3 advocacy_campaigns' do
       before :each do
         stub_actionnetwork_request('/advocacy_campaigns/?page=3', method: :get)
-          .to_return(status: 200, body: response_body)
+          .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
       end
 
       it 'should retreive the advocacy_campaigns data from page 3' do
@@ -570,7 +570,7 @@ describe ActionNetworkRest::AdvocacyCampaigns do
     end
     let!(:post_stub) do
       stub_actionnetwork_request('/advocacy_campaigns/', method: :post, body: request_body)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should POST advocacy_campaign data' do
@@ -724,7 +724,7 @@ describe ActionNetworkRest::AdvocacyCampaigns do
       stub_actionnetwork_request("/advocacy_campaigns/#{advocacy_campaign_id}",
                                  method: :put,
                                  body: advocacy_campaign_data)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should PUT advocacy_campaign data' do

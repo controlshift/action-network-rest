@@ -26,7 +26,7 @@ describe ActionNetworkRest::Taggings do
 
     before :each do
       stub_actionnetwork_request("/tags/#{tag_id}/taggings/#{tagging_id}", method: :get)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should retrieve tagging data' do
@@ -52,7 +52,7 @@ describe ActionNetworkRest::Taggings do
     context 'requesting first page' do
       before :each do
         stub_actionnetwork_request("/tags/#{tag_id}/taggings/?page=1", method: :get)
-          .to_return(status: 200, body: response_body)
+          .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
       end
 
       it 'should retrieve the taggings data from first page when calling without an argument' do
@@ -79,7 +79,7 @@ describe ActionNetworkRest::Taggings do
     context 'requesting page 10' do
       before :each do
         stub_actionnetwork_request("/tags/#{tag_id}/taggings/?page=10", method: :get)
-          .to_return(status: 200, body: response_body)
+          .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
       end
 
       it 'should retrieve the taggings data from requested page number' do
@@ -130,7 +130,7 @@ describe ActionNetworkRest::Taggings do
 
     let!(:post_stub) do
       stub_actionnetwork_request("/tags/#{tag_id}/taggings/", method: :post, body: request_body)
-        .to_return(status: response_code, body: response_body)
+        .to_return(status: response_code, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should POST tagging data' do
@@ -177,7 +177,7 @@ describe ActionNetworkRest::Taggings do
 
     let!(:delete_stub) do
       stub_actionnetwork_request("/tags/#{tag_id}/taggings/#{tagging_id}", method: :delete)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should DELETE tagging' do

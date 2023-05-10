@@ -19,7 +19,7 @@ describe ActionNetworkRest::Tags do
 
     before :each do
       stub_actionnetwork_request("/tags/#{tag_id}", method: :get)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should retrieve tag data' do
@@ -43,7 +43,7 @@ describe ActionNetworkRest::Tags do
     context 'requesting first page' do
       before :each do
         stub_actionnetwork_request('/tags/?page=1', method: :get)
-          .to_return(status: 200, body: response_body)
+          .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
       end
 
       it 'should retrieve the tags data from first page when calling without an argument' do
@@ -70,7 +70,7 @@ describe ActionNetworkRest::Tags do
     context 'requesting page 10' do
       before :each do
         stub_actionnetwork_request('/tags/?page=10', method: :get)
-          .to_return(status: 200, body: response_body)
+          .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
       end
 
       it 'should retrieve the tags data from requested page number' do
@@ -97,7 +97,7 @@ describe ActionNetworkRest::Tags do
     end
     let!(:post_stub) do
       stub_actionnetwork_request('/tags/', method: :post, body: request_body)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should POST tag' do
@@ -112,7 +112,7 @@ describe ActionNetworkRest::Tags do
   describe '#find_by_name' do
     before :each do
       stub_actionnetwork_request('/tags/?page=1', method: :get)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     context 'no tags exist' do
@@ -146,7 +146,7 @@ describe ActionNetworkRest::Tags do
       context 'no tag matching the name' do
         before :each do
           stub_actionnetwork_request('/tags/?page=2', method: :get)
-            .to_return(status: 200, body: {}.to_json)
+            .to_return(status: 200, body: {}.to_json, headers: { content_type: 'application/json' })
         end
 
         it 'should return nil if no tag matching the name is found' do
@@ -180,7 +180,7 @@ describe ActionNetworkRest::Tags do
 
       before :each do
         stub_actionnetwork_request('/tags/?page=2', method: :get)
-          .to_return(status: 200, body: second_page_response_body)
+          .to_return(status: 200, body: second_page_response_body, headers: { content_type: 'application/json' })
       end
 
       it 'should return tag matching the name' do

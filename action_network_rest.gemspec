@@ -23,10 +23,10 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 2.6'
 
-  spec.add_runtime_dependency 'vertebrae', '~> 0.6.0'
+  spec.add_runtime_dependency 'vertebrae', '>= 1.0.0'
 
   spec.add_development_dependency 'bundler', '~> 2.1'
-  spec.add_development_dependency 'byebug', '~> 11.1'
+  spec.add_development_dependency 'debug'
   spec.add_development_dependency 'dotenv', '~> 2.7'
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
