@@ -60,6 +60,11 @@ person = client.people.find_by_email(person_email)
 person_id = person.action_network_id
 puts person.email_addresses
 
+# Retrieve a Person's data by their phone_number
+person = client.people.find_by_phone_number('+12223334444')
+person_id = person.action_network_id
+puts person.phone_numbers
+
 # Update a Person
 client.people.update(person_id, {custom_fields: {custom_id: "12345"}})
 

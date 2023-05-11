@@ -258,6 +258,55 @@ describe ActionNetworkRest::People do
     end
   end
 
+  describe '#find_by_phone_number' do
+    let(:person_phone) { '+12223334444' }
+    let(:person_id) { 'abc-def-123-456' }
+    let(:response_body) do
+      {
+        _embedded: {
+          'osdi:people': [
+            identifiers: ["action_network:#{person_id}"]
+          ]
+        }
+      }.to_json
+    end
+    let(:person_result) do
+      {
+        'action_network_id' => 'abc-def-123-456',
+        'identifiers' => ['action_network:abc-def-123-456']
+      }
+    end
+    let!(:get_stub) do
+      url_encoded_filter_string = CGI.escape("phone_number eq '#{person_phone}'")
+      stub_actionnetwork_request("/people/?filter=#{url_encoded_filter_string}", method: :get)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
+    end
+
+    let(:other_phone) { '+17776665555' }
+    let(:other_response_body) do
+      {
+        _embedded: {
+          'osdi:people': []
+        }
+      }.to_json
+    end
+    let!(:other_get_stub) do
+      url_encoded_filter_string = CGI.escape("phone_number eq '#{other_phone}'")
+      stub_actionnetwork_request("/people/?filter=#{url_encoded_filter_string}", method: :get)
+        .to_return(status: 200, body: other_response_body, headers: { content_type: 'application/json' })
+    end
+
+    it 'should GET /people with filter request and return person object' do
+      result = subject.people.find_by_phone_number(person_phone)
+      expect(result).to eq(person_result)
+    end
+
+    it 'should GET /people with filter request and return nil if no person' do
+      result = subject.people.find_by_phone_number(other_phone)
+      expect(result).to be_nil
+    end
+  end
+
   describe '#update' do
     let(:person_data) do
       {
