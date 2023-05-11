@@ -39,6 +39,25 @@ module ActionNetworkRest
       set_action_network_id_on_object(person_object) if person_object.present?
     end
 
+    def find_by_phone_number(phone_number)
+      # This works for parsing exactly 1 person's info out of the response.
+      # The response we get from Action Network is expected to have
+      #
+      # "_embedded": {
+      #   "osdi:people": [{
+      #       "identifiers": [
+      #           "action_network:c947bcd0-929e-11e3-a2e9-12313d316c29"
+      #            ....
+      #        ]
+      #    }]
+      # }
+      #
+      url_encoded_filter_string = url_escape("phone_number eq '#{phone_number}'")
+      response = client.get_request "#{base_path}?filter=#{url_encoded_filter_string}"
+      person_object = response.body[:_embedded][osdi_key].first
+      set_action_network_id_on_object(person_object) if person_object.present?
+    end
+
     def update(id, person_data)
       people_path = "#{base_path}#{url_escape(id)}"
       response = client.put_request people_path, person_data
