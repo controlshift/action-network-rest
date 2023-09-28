@@ -59,7 +59,7 @@ describe ActionNetworkRest::EventCampaigns do
 
     before :each do
       stub_actionnetwork_request("/campaigns/#{campaign_id}", method: :get)
-        .to_return(status: status, body: response_body)
+        .to_return(status: status, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should retrieve campaign data' do
@@ -176,7 +176,7 @@ describe ActionNetworkRest::EventCampaigns do
     context 'requesting first page' do
       before :each do
         stub_actionnetwork_request('/campaigns/?page=1', method: :get)
-          .to_return(status: 200, body: response_body)
+          .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
       end
 
       it 'should retrieve first page when callig with argument' do
@@ -197,7 +197,7 @@ describe ActionNetworkRest::EventCampaigns do
     context 'requesting page 3 campaigns' do
       before :each do
         stub_actionnetwork_request('/campaigns/?page=3', method: :get)
-          .to_return(status: 200, body: response_body)
+          .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
       end
 
       it 'should retreive the campaigns data from page 3' do

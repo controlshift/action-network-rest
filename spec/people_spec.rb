@@ -26,7 +26,7 @@ describe ActionNetworkRest::People do
 
     before :each do
       stub_actionnetwork_request("/people/#{person_id}", method: :get)
-        .to_return(status: status, body: response_body)
+        .to_return(status: status, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should retrieve person data' do
@@ -72,7 +72,7 @@ describe ActionNetworkRest::People do
     context 'requesting first page' do
       before :each do
         stub_actionnetwork_request('/people/?page=1', method: :get)
-          .to_return(status: 200, body: response_body)
+          .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
       end
 
       it 'should retrieve the people data from first page when calling without an argument' do
@@ -107,7 +107,7 @@ describe ActionNetworkRest::People do
     context 'requesting page 10' do
       before :each do
         stub_actionnetwork_request('/people/?page=10', method: :get)
-          .to_return(status: 200, body: response_body)
+          .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
       end
 
       it 'should retrieve the people data from requested page number' do
@@ -143,7 +143,7 @@ describe ActionNetworkRest::People do
 
     let!(:post_stub) do
       stub_actionnetwork_request('/people/', method: :post, body: request_body)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should POST person data' do
@@ -197,7 +197,7 @@ describe ActionNetworkRest::People do
     end
     let!(:put_stub) do
       stub_actionnetwork_request("/people/#{person_id}", method: :put, body: request_body)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should PUT the unsubscribe request' do
@@ -230,7 +230,7 @@ describe ActionNetworkRest::People do
     let!(:get_stub) do
       url_encoded_filter_string = CGI.escape("email_address eq '#{person_email}'")
       stub_actionnetwork_request("/people/?filter=#{url_encoded_filter_string}", method: :get)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     let(:other_email) { 'mary+456@example.com' }
@@ -244,7 +244,7 @@ describe ActionNetworkRest::People do
     let!(:other_get_stub) do
       url_encoded_filter_string = CGI.escape("email_address eq '#{other_email}'")
       stub_actionnetwork_request("/people/?filter=#{url_encoded_filter_string}", method: :get)
-        .to_return(status: 200, body: other_response_body)
+        .to_return(status: 200, body: other_response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should GET /people with filter request and return person object' do
@@ -254,6 +254,55 @@ describe ActionNetworkRest::People do
 
     it 'should GET /people with filter request and return nil if no person' do
       result = subject.people.find_by_email(other_email)
+      expect(result).to be_nil
+    end
+  end
+
+  describe '#find_by_phone_number' do
+    let(:person_phone) { '+12223334444' }
+    let(:person_id) { 'abc-def-123-456' }
+    let(:response_body) do
+      {
+        _embedded: {
+          'osdi:people': [
+            identifiers: ["action_network:#{person_id}"]
+          ]
+        }
+      }.to_json
+    end
+    let(:person_result) do
+      {
+        'action_network_id' => 'abc-def-123-456',
+        'identifiers' => ['action_network:abc-def-123-456']
+      }
+    end
+    let!(:get_stub) do
+      url_encoded_filter_string = CGI.escape("phone_number eq '#{person_phone}'")
+      stub_actionnetwork_request("/people/?filter=#{url_encoded_filter_string}", method: :get)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
+    end
+
+    let(:other_phone) { '+17776665555' }
+    let(:other_response_body) do
+      {
+        _embedded: {
+          'osdi:people': []
+        }
+      }.to_json
+    end
+    let!(:other_get_stub) do
+      url_encoded_filter_string = CGI.escape("phone_number eq '#{other_phone}'")
+      stub_actionnetwork_request("/people/?filter=#{url_encoded_filter_string}", method: :get)
+        .to_return(status: 200, body: other_response_body, headers: { content_type: 'application/json' })
+    end
+
+    it 'should GET /people with filter request and return person object' do
+      result = subject.people.find_by_phone_number(person_phone)
+      expect(result).to eq(person_result)
+    end
+
+    it 'should GET /people with filter request and return nil if no person' do
+      result = subject.people.find_by_phone_number(other_phone)
       expect(result).to be_nil
     end
   end
@@ -270,7 +319,7 @@ describe ActionNetworkRest::People do
     let(:response_body) { person_data.to_json }
     let!(:put_stub) do
       stub_actionnetwork_request("/people/#{person_id}", method: :put, body: person_data)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should PUT people data' do
@@ -290,7 +339,7 @@ describe ActionNetworkRest::People do
     end
     let!(:get_stub) do
       stub_actionnetwork_request('/people/?page=1', method: :get)
-        .to_return(status: 429, body: response_body)
+        .to_return(status: 429, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should return error after trying 10 times' do

@@ -11,7 +11,8 @@ describe ActionNetworkRest::EventCampaigns do
     let(:response_body) { { some: 'data' }.to_json }
 
     before :each do
-      stub_actionnetwork_request('/event_campaigns/123', method: :get).to_return(status: 200, body: response_body)
+      stub_actionnetwork_request('/event_campaigns/123', method: :get)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should return the response' do
@@ -23,7 +24,8 @@ describe ActionNetworkRest::EventCampaigns do
     let(:response_body) { fixture('event_campaigns/list.json') }
 
     it 'should return the response' do
-      stub_actionnetwork_request('/event_campaigns/?page=1', method: :get).to_return(status: 200, body: response_body)
+      stub_actionnetwork_request('/event_campaigns/?page=1', method: :get)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
 
       expect(subject.event_campaigns.list.length).to eq(2)
       expect(subject.event_campaigns.list.first)
@@ -32,8 +34,8 @@ describe ActionNetworkRest::EventCampaigns do
     end
 
     it 'should paginate' do
-      stub_request = stub_actionnetwork_request('/event_campaigns/?page=2', method: :get).to_return(status: 200,
-                                                                                                    body: response_body)
+      stub_request = stub_actionnetwork_request('/event_campaigns/?page=2', method: :get)
+                     .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
       subject.event_campaigns.list(page: 2)
       expect(stub_request).to have_been_requested
     end
@@ -57,7 +59,7 @@ describe ActionNetworkRest::EventCampaigns do
     end
     let!(:put_stub) do
       stub_actionnetwork_request("/event_campaigns/#{campaign_id}", method: :put, body: campaign_data)
-        .to_return(status: 200, body: response_body)
+        .to_return(status: 200, body: response_body, headers: { content_type: 'application/json' })
     end
 
     it 'should PUT event campaign data' do
