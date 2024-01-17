@@ -15,6 +15,13 @@ describe ActionNetworkRest::Response::RaiseError do
         .to(raise_error(ActionNetworkRest::Response::MustSpecifyValidPersonId, /You must specify a valid person id/))
     end
 
+
+    it 'should raise AuthorizationError if status is 403' do
+      response = { status: '403', body: { error: 'API Key invalid or not present' }.to_json }
+
+      expect { subject.on_complete(response) }.to raise_error(ActionNetworkRest::Response::AuthorizationError, /API Key invalid/)
+    end
+
     it 'should raise NotFoundError if status is 404' do
       response = { status: '404', body: { error: 'Not found' }.to_json }
 
