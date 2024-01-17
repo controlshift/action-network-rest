@@ -15,6 +15,8 @@ module ActionNetworkRest
             if error_message == 'You must specify a valid person id'
               raise MustSpecifyValidPersonId, error_message(response)
             end
+          elsif status_code == 403
+            raise AuthorizationError, error_message(response)
           elsif status_code == 404
             raise NotFoundError, error_message(response)
           elsif status_code == 429
@@ -30,6 +32,8 @@ module ActionNetworkRest
         "#{response[:method].to_s.upcase} #{response[:url]}: #{response[:status]} \n\n #{response[:body]}"
       end
     end
+
+    class AuthorizationError < StandardError; end
 
     class MissingActionNetworkId < StandardError; end
 
