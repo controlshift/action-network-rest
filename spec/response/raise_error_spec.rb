@@ -15,6 +15,20 @@ describe ActionNetworkRest::Response::RaiseError do
         .to(raise_error(ActionNetworkRest::Response::MustSpecifyValidPersonId, /You must specify a valid person id/))
     end
 
+    it 'should raise ResponseError for a 400 whose error message is not specially handled' do
+      response = { status: '400', body: { error: 'Some other validation error' }.to_json }
+
+      expect { subject.on_complete(response) }
+        .to(raise_error(ActionNetworkRest::Response::ResponseError, /Some other validation error/))
+    end
+
+    it 'should raise AuthorizationError if status is 403' do
+      response = { status: '403', body: { error: 'API Key invalid or not present' }.to_json }
+
+      expect { subject.on_complete(response) }
+        .to(raise_error(ActionNetworkRest::Response::AuthorizationError, /API Key invalid/))
+    end
+
     it 'should raise NotFoundError if status is 404' do
       response = { status: '404', body: { error: 'Not found' }.to_json }
 
@@ -29,13 +43,27 @@ describe ActionNetworkRest::Response::RaiseError do
       end.to raise_error(ActionNetworkRest::Response::TooManyRequests, /Too many requests/)
     end
 
-    %w[418 500].each do |generic_error_code|
-      it "should raise ResponseError for generic error with status #{generic_error_code}" do
-        response = { status: generic_error_code, body: { error: 'Something went wrong' }.to_json }
+    %w[500 502 503].each do |server_error_code|
+      it "should raise ServerError for server error with status #{server_error_code}" do
+        response = { status: server_error_code, body: { error: 'Something went wrong' }.to_json }
 
         expect { subject.on_complete(response) }
-          .to(raise_error(ActionNetworkRest::Response::ResponseError, /Something went wrong/))
+          .to(raise_error(ActionNetworkRest::Response::ServerError, /Something went wrong/))
       end
+    end
+
+    it 'ServerError should be a ResponseError so existing rescues still catch 5xx' do
+      response = { status: '500', body: { error: 'Something went wrong' }.to_json }
+
+      expect { subject.on_complete(response) }
+        .to(raise_error(ActionNetworkRest::Response::ResponseError))
+    end
+
+    it 'should raise ResponseError for a generic client error with status 418' do
+      response = { status: '418', body: { error: 'Something went wrong' }.to_json }
+
+      expect { subject.on_complete(response) }
+        .to(raise_error(ActionNetworkRest::Response::ResponseError, /Something went wrong/))
     end
   end
 end
