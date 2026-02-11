@@ -21,11 +21,13 @@ Gem::Specification.new do |spec|
   end
   spec.require_paths = ['lib']
 
-  spec.required_ruby_version = '>= 2.6'
+  spec.required_ruby_version = '>= 3.0.0'
 
-  spec.add_runtime_dependency 'vertebrae', '>= 1.0.0'
+  spec.add_runtime_dependency 'vertebrae', '>= 1.0.5'
+  spec.add_runtime_dependency 'faraday', '~> 2.0'
+  spec.add_runtime_dependency 'faraday-mashify', '~> 1.0'
 
-  spec.add_development_dependency 'bundler', '~> 2.1'
+  spec.add_development_dependency 'bundler', '>= 2.1'
   spec.add_development_dependency 'debug', '> 0'
   spec.add_development_dependency 'dotenv', '~> 2.7'
   spec.add_development_dependency 'rake', '~> 13.0'
