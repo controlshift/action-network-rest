@@ -6,7 +6,7 @@ module ActionNetworkRest
 
     def initialize(options = {}, &block)
       self.api_key = options[:api_key]
-      super(options, &block)
+      super
     end
 
     def default_options

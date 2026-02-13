@@ -4,10 +4,6 @@ module ActionNetworkRest
   class Campaigns < Base
     attr_accessor :campaign_id
 
-    def initialize(client:)
-      super(client: client)
-    end
-
     def base_path
       'campaigns/'
     end
