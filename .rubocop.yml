@@ -17,3 +17,5 @@ Naming/MemoizedInstanceVariableName:
   Enabled: false
 Style/Documentation:
   Enabled: false
+Style/HashAsLastArrayItem:
+  Enabled: false
