@@ -8,7 +8,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.1
+          ruby-version: 4.0
           bundler-cache: true
       - run: bundle install
       - run: bundle exec rspec
@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.1
+          ruby-version: 4.0
           bundler-cache: true
       - run: bundle install
       - run: bundle exec rubocop
