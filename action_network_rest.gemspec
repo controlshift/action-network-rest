@@ -7,8 +7,8 @@ require 'action_network_rest/version'
 Gem::Specification.new do |spec|
   spec.name          = 'action_network_rest'
   spec.version       = ActionNetworkRest::VERSION
-  spec.authors       = ['Grey Moore']
-  spec.email         = ['grey@controlshiftlabs.com']
+  spec.authors       = ['Grey Moore', 'Owens Ehimen', 'Diego Marcet']
+  spec.email         = ['talk@controlshiftlabs.com']
 
   spec.summary       = 'Ruby client for interacting with the ActionNetwork REST API'
   spec.homepage      = 'https://github.com/controlshift/action-network-rest'
@@ -21,11 +21,11 @@ Gem::Specification.new do |spec|
   end
   spec.require_paths = ['lib']
 
-  spec.required_ruby_version = '>= 4.0.0'
+  spec.required_ruby_version = ['>= 3.3', '< 5.0']
 
   spec.add_dependency 'faraday', '~> 2.0'
   spec.add_dependency 'faraday-mashify', '~> 1.0'
-  spec.add_dependency 'vertebrae', '>= 1.0.5'
+  spec.add_dependency 'vertebrae', '~> 1.0'
 
   spec.metadata['rubygems_mfa_required'] = 'true'
 end
