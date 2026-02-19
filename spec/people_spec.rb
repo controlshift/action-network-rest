@@ -216,7 +216,7 @@ describe ActionNetworkRest::People do
       {
         _embedded: {
           'osdi:people': [
-            identifiers: ["action_network:#{person_id}"]
+            { identifiers: ["action_network:#{person_id}"] }
           ]
         }
       }.to_json
@@ -265,7 +265,7 @@ describe ActionNetworkRest::People do
       {
         _embedded: {
           'osdi:people': [
-            identifiers: ["action_network:#{person_id}"]
+            { identifiers: ["action_network:#{person_id}"] }
           ]
         }
       }.to_json
