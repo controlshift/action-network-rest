@@ -7,8 +7,8 @@ require 'action_network_rest/version'
 Gem::Specification.new do |spec|
   spec.name          = 'action_network_rest'
   spec.version       = ActionNetworkRest::VERSION
-  spec.authors       = ['Grey Moore']
-  spec.email         = ['grey@controlshiftlabs.com']
+  spec.authors       = ['Grey Moore', 'Owens Ehimen', 'Diego Marcet']
+  spec.email         = ['talk@controlshiftlabs.com']
 
   spec.summary       = 'Ruby client for interacting with the ActionNetwork REST API'
   spec.homepage      = 'https://github.com/controlshift/action-network-rest'
@@ -21,17 +21,11 @@ Gem::Specification.new do |spec|
   end
   spec.require_paths = ['lib']
 
-  spec.required_ruby_version = '>= 2.6'
+  spec.required_ruby_version = ['>= 3.3', '< 5.0']
 
-  spec.add_runtime_dependency 'vertebrae', '>= 1.0.0'
+  spec.add_dependency 'faraday', '~> 2.0'
+  spec.add_dependency 'faraday-mashify', '~> 1.0'
+  spec.add_dependency 'vertebrae', '~> 1.0'
 
-  spec.add_development_dependency 'bundler', '~> 2.1'
-  spec.add_development_dependency 'debug', '> 0'
-  spec.add_development_dependency 'dotenv', '~> 2.7'
-  spec.add_development_dependency 'rake', '~> 13.0'
-  spec.add_development_dependency 'rspec', '~> 3.0'
-  spec.add_development_dependency 'rubocop', '> 0'
-  spec.add_development_dependency 'rubocop-performance', '> 0'
-  spec.add_development_dependency 'webmock', '~> 3.8.3'
   spec.metadata['rubygems_mfa_required'] = 'true'
 end

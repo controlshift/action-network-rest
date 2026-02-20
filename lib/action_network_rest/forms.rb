@@ -2,10 +2,6 @@
 
 module ActionNetworkRest
   class Forms < Base
-    def initialize(client:)
-      super(client: client)
-    end
-
     def base_path
       'forms/'
     end

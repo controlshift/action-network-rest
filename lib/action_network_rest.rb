@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'vertebrae'
+require 'faraday/mashify'
 
 module ActionNetworkRest
   extend Vertebrae::Base

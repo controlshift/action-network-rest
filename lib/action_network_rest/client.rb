@@ -4,9 +4,9 @@ module ActionNetworkRest
   class Client < API
     attr_accessor :api_key
 
-    def initialize(options = {}, &block)
+    def initialize(options = {}, &)
       self.api_key = options[:api_key]
-      super(options, &block)
+      super
     end
 
     def default_options

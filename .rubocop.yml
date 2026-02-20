@@ -1,9 +1,9 @@
-require:
-  - rubocop-performance
-
 AllCops:
   NewCops: enable
-  TargetRubyVersion: 2.6
+  SuggestExtensions: false
+
+plugins:
+  - rubocop-performance
 Metrics/AbcSize:
   Enabled: false
 Metrics/BlockLength:
