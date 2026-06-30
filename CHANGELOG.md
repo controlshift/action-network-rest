@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.0] - 2026-06-30
+
+### Breaking Changes
+- When a response has a 403 status, now raises AuthorizationError. (Previously, ResponseError was raised in this case.)
+
+### Other Changes
+- Added a new error class ServerError, as a subclass of ResponseError. 5xx response statuses now raise this more specific type of error.
+
 ## [1.1.0] - 2026-02-11
 
 ### Breaking Changes
