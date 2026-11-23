@@ -1,5 +1,10 @@
 # Changelog
 
+## [Unreleased]
+
+### Other Changes
+- Added a new error class UnexpectedResponseFormat, as a subclass of ServerError. A 2xx response whose body isn't JSON (for example an HTML error or maintenance page) now raises it instead of returning a raw String that callers fail to index with a confusing TypeError or NoMethodError.
+
 ## [2.0.0] - 2026-06-30
 
 ### Breaking Changes

@@ -5,9 +5,8 @@ module ActionNetworkRest
     class RaiseError < Faraday::Middleware
       def on_complete(response)
         status_code = response[:status].to_i
-        return unless (400...600).cover?(status_code)
-
-        raise error_class_for(status_code, response), error_message(response)
+        raise error_class_for(status_code, response), error_message(response) if (400...600).cover?(status_code)
+        raise UnexpectedResponseFormat, unexpected_format_message(response) if unparsed_body?(response)
       end
 
       def error_message(response)
@@ -15,6 +14,23 @@ module ActionNetworkRest
       end
 
       private
+
+      # The JSON middleware only parses JSON content types, so a success status
+      # carrying anything else (e.g. an HTML maintenance page) arrives as a raw
+      # String that callers would otherwise index as if it were a Hash.
+      def unparsed_body?(response)
+        body = response[:body]
+        body.is_a?(String) && !body.strip.empty? && !content_type(response).match?(/\bjson\b/)
+      end
+
+      def unexpected_format_message(response)
+        "#{response[:method].to_s.upcase} #{response[:url]}: #{response[:status]} with non-JSON " \
+          "content-type #{content_type(response).inspect} \n\n #{response[:body][0, 500]}"
+      end
+
+      def content_type(response)
+        (response[:response_headers] || {})['content-type'].to_s
+      end
 
       def error_class_for(status_code, response)
         case status_code
@@ -51,6 +67,10 @@ module ActionNetworkRest
     # continue to catch server errors while allowing callers to distinguish
     # transient server-side failures (worth retrying) from client errors.
     class ServerError < ResponseError; end
+
+    # Raised when a success response has a body that isn't JSON, which happens
+    # when Action Network serves an error or maintenance page with a 2xx status.
+    class UnexpectedResponseFormat < ServerError; end
 
     class TooManyRequests < StandardError; end
 

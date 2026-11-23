@@ -59,6 +59,33 @@ describe ActionNetworkRest::Response::RaiseError do
         .to(raise_error(ActionNetworkRest::Response::ResponseError))
     end
 
+    it 'should not raise for a 200 with a JSON content type' do
+      response = { status: '200', body: '{"identifiers":[]}',
+                   response_headers: { 'content-type' => 'application/hal+json; charset=utf-8' } }
+
+      expect { subject.on_complete(response) }.not_to raise_error
+    end
+
+    it 'should not raise for a 204 with an empty body' do
+      expect { subject.on_complete(status: '204', body: '', response_headers: {}) }.not_to raise_error
+    end
+
+    it 'should raise UnexpectedResponseFormat for a 200 with an HTML body' do
+      response = { method: :post, url: 'https://actionnetwork.org/api/v2/people/', status: '200',
+                   body: '<html><body>Down for maintenance</body></html>',
+                   response_headers: { 'content-type' => 'text/html' } }
+
+      expect { subject.on_complete(response) }
+        .to(raise_error(ActionNetworkRest::Response::UnexpectedResponseFormat,
+                        %r{POST https://actionnetwork.org/api/v2/people/: 200 with non-JSON content-type "text/html"}))
+    end
+
+    it 'UnexpectedResponseFormat should be a ServerError' do
+      response = { status: '200', body: 'oops', response_headers: {} }
+
+      expect { subject.on_complete(response) }.to(raise_error(ActionNetworkRest::Response::ServerError))
+    end
+
     it 'should raise ResponseError for a generic client error with status 418' do
       response = { status: '418', body: { error: 'Something went wrong' }.to_json }
 
